@@ -1,2 +1,2 @@
 # quadris
-CS246 Final Project 
+CS246 Final Project!
