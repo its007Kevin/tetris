@@ -6,6 +6,7 @@
 
 class LevelZero: public Level {
   bool isHeavy = false;
+  bool brownBlock = false;
   int blockCount = 0; //will reset to the beginning of the textfile
   std::vector<char> blocks;
 public:

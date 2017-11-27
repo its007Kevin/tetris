@@ -6,6 +6,7 @@
 class LevelTwo: public Level {
 protected:
   bool isHeavy = false;
+  int brownBlock = false;
   char pieces[7] = {'S','Z','I','O','T','L','J'};
 public:
   Piece generatePiece() override;

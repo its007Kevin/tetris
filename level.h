@@ -5,6 +5,7 @@
 class Level {
 protected:
   //bool isHeavy;
+  //bool brownBlock;
 public:
   virtual Piece generatePiece() = 0;
 };

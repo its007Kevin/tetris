@@ -16,9 +16,6 @@ Piece LevelZero::generatePiece() {
     blockCount = 0;
   }
 
-  //auto newPiece = std::make_unique<Piece>(pieces[blockCount], isHeavy);
-  //Piece *newPiece = new Piece{blocks[blockCount], isHeavy};
-
   ++blockCount; //increment to get next block
-  return std::make_unique<Piece>(blocks.at(blockCount), isHeavy);
+  return std::make_unique<Piece>(blocks.at(blockCount), isHeavy, brownBlock);
 }
