@@ -1,58 +1,92 @@
 #include <iostream>
 #include <string>
-// You may include other allowed headers, as needed
-#include "grid.h"
-#include "state.h"
 #include "graphicsdisplay.h"
 using namespace std;
-
-// Do not remove any code; do not add code other than where indicated.
 
 int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-  Grid g;
-  // Add code here
-  Colour colour = Colour::Black; 
 
+  string left = "left";
+  string right = "right";
+  string down = "down";
+  string drop = "drop";
+  string cw = "clockwise";
+  string ccw = "counterclockwise";
+  string lvlup = "levelup";
+  string lvldown = "leveldown";
+  string norand = "norandom";
+  string rand = "random";
+  string seq = "sequence";
+  string I = "I";
+  string J = "J";
+  string L = "L";
+  string res = "restart";
+  string hint = "hint";
+
+
+  Grid g;
+
+  g.initialize();
   try {
-    while (true) {
-      cin >> cmd;
-      if (cmd == "new") {
-        int n;
-        cin >> n;
-        // Add code here
-        if (n >= 4 && (n%2 == 0)) {
-      	  g.setObserver(new GraphicsDisplay{n, 500});
-          g.init(n);
-        }
-      }
-      else if (cmd == "play") {
-        int r = 0, c = 0;
-        cin >> r >> c;
-        try {
-          g.setPiece(r, c, colour);
-          // If valid move, switch colours
-          if (colour == Colour::Black) {
-            colour = Colour::White;
-          } else {
-            colour = Colour::Black;
-          }
-        } catch (InvalidMove e) {} // Otherwise keep the same colour
-        // Check if board is full or if there is a winner
-        if (g.isFull()) {
-          // Output winner to stdout
-          if (g.whoWon() == Colour::Black) {
-            cout << "Black Wins!" << endl; 
-          } else if (g.whoWon() == Colour::White) {
-            cout << "White Wins!" << endl;
-          } else {
-            cout << "Tie!" << endl;
-          }
-          break; // End input stream
-        }
-      }
+  while (cin >> cmd) {
+    if (cmd == left) {
+      g.moveLeft();
+    }
+    else if (cmd == right) {
+      g.moveRight();
+    }
+    else if (cmd == down) {
+      g.moveDown();
+    }
+    else if (cmd == drop) {
+      g.moveDrop();
+    }
+    else if (cmd == cw) {
+      g.rotateCW();
+    }
+    else if (cmd == ccw) {
+      g.rotateCCW();
+    }
+    else if (cmd == lvlup) {
+      g.levelUp();
+    }
+    else if (cmd == lvldown) {
+      g.levelDown();
+    }
+    else if (cmd == norand) {
+      string file;
+      cin >> file;
+      g.noRandom(file);
+    }
+    else if (cmd == rand) {
+      g.random();
+    }
+    else if (cmd == seq) {
+      string file;
+      cin >> file;
+      g.sequence(file);
+    }
+    else if (cmd == I) {
+      g.replaceWithI();
+    }
+    else if (cmd == J) {
+      g.replaceWithJ();
+    }
+    else if (cmd == L) {
+      g.replaceWithL();
+    }
+    else if (cmd == res) {
+      g.restart();
+    }
+    else if (cmd == hint) {
+      g.hint();
+    }
+    else {
+      cout << "Invalid input" << endl;
     }
   }
+  }
   catch (ios::failure &) {}  // Any I/O failure quits
+  cout << "Game Over!" << endl;
 }
