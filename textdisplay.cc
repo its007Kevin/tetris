@@ -1,34 +1,37 @@
 #include "textdisplay.h"
-#include "info.h"
 #include "subject.h"
 #include <iostream>
 
 using namespace std;
 
-TextDisplay::TextDisplay(int n): gridSize{n} {
-    for (int y = 0; y < gridSize; y++) { // y coordinate
+TextDisplay::TextDisplay(int r, int c): r{r}, c{c} {
+    for (int i = 0; i < r; i++) { // creates r rows
         vector<char> row;
-        for (int x = 0; x < gridSize; x++) { // x coordinate
+        for (int j = 0; j < c; j++) { // creates c columns
             row.emplace_back('-'); 
         }
         theDisplay.emplace_back(row);
     }
 }
 
-void TextDisplay::notify(Subject<Info, State> &whoNotified) {
-    if (whoNotified.getInfo().colour == Colour::Black) {
-        theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'B';
-    } else if (whoNotified.getInfo().colour == Colour::White) {
-        theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'W';
-    }
+void TextDisplay::notify(Subject &whoNotified) {
+    // change text display depending on data field in subject
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
-    for (int y = 0; y < td.gridSize; y++) { // y coordinate
-        for (int x = 0; x < td.gridSize; x++) { // x coordinate
-            out << td.theDisplay[y][x];
+    out << "Level: " << endl;
+    out << "Score: " << endl;
+    out << "Hi Score: " << endl;
+    out << "-----------" << endl; 
+    out << endl;
+    for (int i = 3; i < td.r; i++) { // y coordinate
+        for (int j = 0; j < td.c; j++) { // x coordinate
+            out << td.theDisplay[i][j];
         }
         out << endl;
     }
+    out << endl;
+    out << "-----------" << endl;
+    out << "Next: " << endl;
     return out;
 }
