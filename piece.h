@@ -1,13 +1,22 @@
-#ifndef PIECE_H
-#define PIECE_H
-#include <iostream>
-#include <vector>
+#ifndef QUADRIS_PIECE_H
+#define QUADRIS_PIECE_H
 #include <cstddef>
-#include "cell.h"
-#include "info.h"
+#include <vector>
 
-class Piece {
-	
+struct Piece {
+  std::vector<std::vector<int>> cells;
+  int botLeftx = 0;
+  int botLefty = 0;
+  int botRightx = 0;
+  int botRighty = 0;
+  char type;
+  bool isHeavy;
+  
+ public:
+  Piece(char type, bool isHeavy);
+  void rotate(bool isCw);
+  void moveLeft();
+  void moveRight();
+  void moveDown();
 };
-
 #endif

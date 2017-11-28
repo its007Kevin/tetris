@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
-#include "grid.h"
 #include "textdisplay.h"
+#include "grid.h"
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -25,10 +26,9 @@ int main(int argc, char *argv[]) {
   string res = "restart";
   string hint = "hint";
 
-  Grid g;
-
   int r = 18;
   int c = 11;
+  Grid g;
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(r, c);
   g.setTextDisplay(td);
   g.init(r, c);
