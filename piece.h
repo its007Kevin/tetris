@@ -3,12 +3,13 @@
 #include <cstddef>
 #include <vector>
 
+
 struct Piece {
   std::vector<std::vector<int>> cells;
+  int height;
+  int width;
   int botLeftx = 0;
   int botLefty = 0;
-  int botRightx = 0;
-  int botRighty = 0;
   char type;
   bool isHeavy;
   
