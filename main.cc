@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
   int r = 18;
   int c = 11;
-  TextDisplay *td = new TextDisplay{r, c};
+  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(r, c);
   g.setTextDisplay(td);
   g.init(r, c);
   cout << g;

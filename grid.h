@@ -13,7 +13,7 @@ class InvalidMove{};
 
 class Grid {
   std::vector<std::vector<Cell>> theGrid;  // The actual grid.
-  TextDisplay *td = nullptr; // The text display.
+  std::shared_ptr<TextDisplay> td; // The text display.
 
  public:
   ~Grid();

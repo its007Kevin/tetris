@@ -8,11 +8,9 @@
 
 using namespace std;
 
-Grid::~Grid() {
-    delete td;
-}
+Grid::~Grid() {}
 
-void Grid::setTextDisplay(TextDisplay *td) {
+void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
     this->td = td;
 }
 
