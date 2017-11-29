@@ -21,4 +21,5 @@ Info Cell::getInfo() const {
 
 void Cell::setData(char d) {
   data = d;
+  notifyObservers();
 }

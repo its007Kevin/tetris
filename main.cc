@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "textdisplay.h"
 #include "grid.h"
 
 using namespace std;
@@ -25,29 +26,32 @@ int main(int argc, char *argv[]) {
   string res = "restart";
   string hint = "hint";
 
-
+  // Intialize and print empty board
   Grid g;
+  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(15, 11);
+  g.setTextDisplay(td);
+  g.init(15, 11);
+  cout << g;
 
-  g.initialize();
   try {
   while (cin >> cmd) {
     if (cmd == left) {
-      g.moveLeft();
+      //g.moveLeft();
     }
     else if (cmd == right) {
-      g.moveRight();
+      //g.moveRight();
     }
     else if (cmd == down) {
-      g.moveDown();
+      g.pieceCommand(down);
     }
     else if (cmd == drop) {
-      g.moveDrop();
+      //g.moveDrop();
     }
     else if (cmd == cw) {
-      g.rotate(true);
+      //g.rotate(true);
     }
     else if (cmd == ccw) {
-      g.rotate(false);
+      //g.rotate(false);
     }
     else if (cmd == lvlup) {
       g.levelUp();

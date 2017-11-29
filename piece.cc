@@ -1,121 +1,124 @@
 #include "piece.h"
+#include "grid.h"
+#include <iostream>
+#include <vector>
 
-Piece::Piece(char type, bool isHeavy) {
-  this->type = type;
-  this->isHeavy = isHeavy;
-  //this->g = g;
+using namespace std;
+
+Piece::Piece(char type): type{type} {
   if (type == 'I') {
-    cells = {{0,0}, {1,0}, {2,0}, {3,0}};
+    coords = {{0, 0}, {1, 0}, {2, 0}, {3, 0}};
     botLefty = 3;
-    height = 1;
-    width = 4;
+    height = 4;
+    width = 1;
   }
   else if (type == 'J') {
-    cells = {{0,0}, 
-	     {0, 1}, {1, 1}, {2, 1}};
+    coords = {{2, 0}, {0, 1}, {1, 1}, {2, 1}};
     botLefty = 1;
-    height = 2;
-    width = 3;
+    height = 3;
+    width = 2;
   }
   else if (type == 'L') {
-    cells = {		   {2, 0}, 
-	     {0,1}, {1,1}, {2,1}};
+    coords = {{0, 0}, {1, 0}, {2, 0}, {2,1}};
     botLefty = 1;
-    height = 2;
-    width = 3;
+    height = 3;
+    width = 2;
   }
   else if (type == 'O') {
-    cells = {{0, 0}, {0, 1}, 
-	     {1, 0}, {1, 1}};
+    coords = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     botLefty = 1;
     height = 2;
     width = 2;
   }
   else if (type == 'S') {
-    cells = {        {1, 0}, {2, 0}, 
-	     {0, 1}, {1, 1}};
+    coords = {{1, 0}, {0, 2}, {0, 1}, {1, 1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'Z') {
-    cells = {{0,0}, {1,0}, 
-		    {1,1}, {2,1}};
+    coords = {{0, 0}, {0, 1}, {1,1}, {1, 2}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'T') {
-    cells = {        {1, 0}, 
-	     {0, 1}, {1, 1}, {2, 1}};
+    coords = {{0, 0}, {0, 1}, {0, 2}, {1, 1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == '*') { 
-    cells = {{0, 0}};
+    coords = {{0, 0}};
     height = 1;
     width = 1;
   }
+  potentialCoords = coords;
 }
 //rotate: find lowest x, y coord, add 4 to it
 
+void Piece::makeIsHeavy() {
+  isHeavy = true;
+}
+
 void Piece::rotate(bool isCw) {
-  std::vector<std::vector<int>> newCells;
+  vector<vector<int>> newcoords;
 }
 
-void Piece::OLDrotate(bool isCw) {
-  std::vector<std::vector<int>> newCells;
-  if (isCw) {
-    int sizeInner = cells[0].size();
-    for (int i = 0; i < sizeInner; i++) {
-      std::vector<int> newRow;
-      int sizeOuter = cells.size();
-      for (int j = sizeOuter - 1; j >= 0; j--) {
-        newRow.emplace_back(cells[j][i]);
-      }
-      newCells.emplace_back(newRow);
+// void Piece::OLDrotate(bool isCw) {
+//   std::vector<std::vector<int>> newcoords;
+//   if (isCw) {
+//     int sizeInner = coords[0].size();
+//     for (int i = 0; i < sizeInner; i++) {
+//       std::vector<int> newRow;
+//       int sizeOuter = coords.size();
+//       for (int j = sizeOuter - 1; j >= 0; j--) {
+//         newRow.emplace_back(coords[j][i]);
+//       }
+//       newcoords.emplace_back(newRow);
   
-    }
-  }
-  else {
-    int sizeInner = cells[0].size();
-    for (int i = sizeInner - 1; i >= 0; i--) {
-      std::vector<int> newRow;
-      int sizeOuter = cells.size();
-      for (int j = 0; j < sizeOuter; j++) {
-        newRow.emplace_back(cells[j][i]);
-      }
-      newCells.emplace_back(newRow);
-    }
-    botLeftx -= height;
-  }
-  cells = newCells;
-  int temp = height;
-  height = width;
-  width = temp;
+//     }
+//   }
+//   else {
+//     int sizeInner = coords[0].size();
+//     for (int i = sizeInner - 1; i >= 0; i--) {
+//       std::vector<int> newRow;
+//       int sizeOuter = coords.size();
+//       for (int j = 0; j < sizeOuter; j++) {
+//         newRow.emplace_back(coords[j][i]);
+//       }
+//       newcoords.emplace_back(newRow);
+//     }
+//     botLeftx -= height;
+//   }
+//   coords = newcoords;
+//   int temp = height;
+//   height = width;
+//   width = temp;
+// }
+
+vector<vector<int>> Piece::getCoords() {
+  return coords;
 }
 
-void Piece::moveLeft() {
-  for (int i = 0; i < cells.size(); i++) {
-    cells[i][0]--;
+vector<vector<int>> Piece::getPotentialCoords() {
+  return potentialCoords;
+}
+
+void Piece::set() {
+  coords = potentialCoords;
+}
+
+void Piece::revert() {
+  potentialCoords = coords;
+}
+
+void Piece::down() { 
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][0]++;
   }
 }
 
-void Piece::moveRight() {
-  for (int i = 0; i < cells.size(); i++) {
-    cells[i][0]++;
-  }
-}
-void Piece::moveDown() {
-  for (int i = 0; i < cells.size(); i++) {
-    cells[i][1]++;
-  }
-}
-
-void Piece::moveUp() {
-  for (int i = 0; i < cells.size(); i++) {
-    cells[i][1]--;
-  }
-
+char Piece::getType() {
+  return type;
 }

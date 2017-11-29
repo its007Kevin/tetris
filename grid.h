@@ -3,32 +3,31 @@
 #include <iostream>
 #include <vector>
 #include <cstddef>
+#include <memory>
 #include "cell.h"
 #include "info.h"
+#include "piece.h"
 
-class Piece;
 class TextDisplay;
 class Observer;
-class InvalidMove{};
 
 class Grid {
-  std::vector<std::vector<Cell>> theGrid;  // The actual grid.
-  std::shared_ptr<TextDisplay> td; // The text display.
-  std::unique_ptr<Piece> currPiece;
+  std::vector<std::vector<Cell>> theGrid; 
+  std::shared_ptr<TextDisplay> td;
+  Piece currPiece{'J'};
+  // std::shared_ptr<Piece> currPiece = std::make_shared<Piece>('J');
+
  public:
-  ~Grid();
 
-  void setTextDisplay(TextDisplay *td);
+  void setTextDisplay(std::shared_ptr<TextDisplay> td);
   bool isGameOver() const;
-  void init(int r, int c); // Sets up an a grid with r rows and c columns
-  void setPiece(Piece piece, int r, int c);  // Plays piece at row r, col c.
-
-  //added Nov 28
+  void init(int r, int c);
+  void pieceCommand(std::string cmd);
+  void setPiece(Piece piece); 
   void unsetPiece(Piece piece);
-  void moveLeft();
-  void moveRight();
-  void moveDown();
-  void moveDrop();
+  void checkPiece(Piece piece);
+
+  // Not implemented yet
   void rotate(bool isCw);
   void levelUp();
   void levelDown();

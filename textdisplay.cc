@@ -15,7 +15,9 @@ TextDisplay::TextDisplay(int r, int c): r{r}, c{c} {
 }
 
 void TextDisplay::notify(Subject &whoNotified) {
-    // change text display depending on data field in subject
+    int r = whoNotified.getInfo().row;
+    int c = whoNotified.getInfo().col;
+    theDisplay[r][c] = whoNotified.getInfo().data;
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
@@ -24,7 +26,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << "Hi Score: " << endl;
     out << "-----------" << endl; 
     out << endl;
-    for (int i = 3; i < td.r; i++) { // y coordinate
+    for (int i = 0; i < td.r; i++) { // y coordinate
         for (int j = 0; j < td.c; j++) { // x coordinate
             out << td.theDisplay[i][j];
         }
