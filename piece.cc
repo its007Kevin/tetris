@@ -11,37 +11,43 @@ Piece::Piece(char type, bool isHeavy) {
     width = 4;
   }
   else if (type == 'J') {
-    cells = {{0,0}, {0, 1}, {1, 1}, {2, 1}};
+    cells = {{0,0}, 
+	     {0, 1}, {1, 1}, {2, 1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'L') {
-    cells = {{2, 0}, {0,1}, {1,1}, {2,1}};
+    cells = {		   {2, 0}, 
+	     {0,1}, {1,1}, {2,1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'O') {
-    cells = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    cells = {{0, 0}, {0, 1}, 
+	     {1, 0}, {1, 1}};
     botLefty = 1;
     height = 2;
     width = 2;
   }
   else if (type == 'S') {
-    cells = {{1, 0}, {2, 0}, {0, 1}, {1, 1}};
+    cells = {        {1, 0}, {2, 0}, 
+	     {0, 1}, {1, 1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'Z') {
-    cells = {{0,0}, {1,0}, {1,1}, {2,1}};
+    cells = {{0,0}, {1,0}, 
+		    {1,1}, {2,1}};
     botLefty = 1;
     height = 2;
     width = 3;
   }
   else if (type == 'T') {
-    cells = {{1, 0}, {0, 1}, {1, 1}, {2, 1}};
+    cells = {        {1, 0}, 
+	     {0, 1}, {1, 1}, {2, 1}};
     botLefty = 1;
     height = 2;
     width = 3;
@@ -53,6 +59,10 @@ Piece::Piece(char type, bool isHeavy) {
   }
 }
 //rotate: find lowest x, y coord, add 4 to it
+
+void Piece::rotate(bool isCw) {
+  std::vector<std::vector<int>> newCells;
+}
 
 void Piece::OLDrotate(bool isCw) {
   std::vector<std::vector<int>> newCells;
@@ -87,12 +97,25 @@ void Piece::OLDrotate(bool isCw) {
 }
 
 void Piece::moveLeft() {
-  botLeftx--;
+  for (int i = 0; i < cells.size(); i++) {
+    cells[i][0]--;
+  }
 }
 
 void Piece::moveRight() {
-  botLeftx++;
+  for (int i = 0; i < cells.size(); i++) {
+    cells[i][0]++;
+  }
 }
 void Piece::moveDown() {
-  botLefty--;
+  for (int i = 0; i < cells.size(); i++) {
+    cells[i][1]++;
+  }
+}
+
+void Piece::moveUp() {
+  for (int i = 0; i < cells.size(); i++) {
+    cells[i][1]--;
+  }
+
 }

@@ -18,3 +18,7 @@ Info Cell::getInfo() const {
     info.data = data;
     return info;
 }
+
+void Cell::setData(char d) {
+  data = d;
+}
