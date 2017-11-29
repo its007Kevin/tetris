@@ -19,5 +19,6 @@ struct Piece {
   void moveLeft();
   void moveRight();
   void moveDown();
+  void moveUp();
 };
 #endif

@@ -14,5 +14,6 @@ class Cell : public Subject, public Observer {
   void notify(Subject &whoFrom) override;
   
   Info getInfo() const override;
+  void setData(char d);
 };
 #endif

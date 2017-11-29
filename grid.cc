@@ -91,23 +91,24 @@ void Grid::init(int r, int c) { // Sets up an grid with r rows and c columns
 
 
 // Plays piece at row r, col c.
-void Grid::setPiece(Piece piece, int r, int c) {
+void Grid::setPiece(Piece piece) {
   //can use botLeftx and botLefty to determine r and c
   for (int i = 0; i < piece.cells.size(); i++) {
     // theGrid[a][b] accesses the b'th element of the a'th row
-    if (theGrid[r + piece.cells[i][1]][c + piece.cells[i][0]].getInfo().data != nullptr) throw 3;
+//need proper exception
+    if (theGrid[piece.cells[i][1]][piece.cells[i][0]].getInfo().data != ' ') throw 3;
   }
   for (int i = 0; i < piece.cells.size(); i++) {
-    theGrid[r + piece.cells[i][1]][c + piece.cells[i][0]] //set the piece
+    theGrid[piece.cells[i][1]][piece.cells[i][0]].setData(piece.type); //set the piece
   }
   //notify surrounding cells
 }
 
 void Grid::unsetPiece(Piece piece) {
   for (int i = 0; i < piece.cells.size(); i++) {
-    int r = piece.botLefty - height + piece.cells[i][1];
-    int c = piece.botLeftx + piece.cells[i][0];
-    theGrid[r][c].unset();
+    int r = piece.cells[i][1];
+    int c = piece.cells[i][0];
+    theGrid[r][c].setData(' ');
   }
 }
 
@@ -154,6 +155,29 @@ void Grid::rotate(bool isCw) {
     currPiece.rotate(!isCw);
     setPiece(currPiece);
   }
+}
+
+void Grid::levelUp() {}
+
+void Grid::levelDown() {}
+
+void Grid::noRandom(std::string file) {}
+
+void Grid::random() {}
+
+void Grid::sequence(std::string file) {}
+
+void Grid::replacePieceWith(char type) {
+  //delete old currPiece??
+  currPiece = unique_ptr<Piece> {type};
+}
+
+void Grid::restart() {
+
+}
+
+void Grid::hint() {
+
 }
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {
