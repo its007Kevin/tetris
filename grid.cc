@@ -18,13 +18,13 @@ bool Grid::isGameOver() const {
     return false;
 }
 
-void Grid::init(int r, int c) { 
-    theGrid.clear();     
+void Grid::init(int r, int c) {
+    theGrid.clear();
     for (int i = 0; i < r; i++) { // Generate Rows
         vector<Cell> row;
         for (int j= 0; j < c; j++) { // Generate Columns
-            Cell cell{i, j, '-'}; 
-            cell.attach(td);  
+            Cell cell{i, j, '-'};
+            cell.attach(td);
             row.emplace_back(cell);
         }
         theGrid.emplace_back(row);
@@ -48,10 +48,10 @@ void Grid::checkPiece(Piece piece) {
     for (int i = 0; i < piece.getPotentialCoords().size(); i++) {
         r = piece.getPotentialCoords()[i][0];
         c = piece.getPotentialCoords()[i][1];
-        if (theGrid[r][c].getInfo().data != '-') {
+        if (r < 0 || c < 0 || r > 14 || c > 10 || theGrid[r][c].getInfo().data != '-') {
             throw "invalid move";
         }
-    }  
+    }
 }
 
 void Grid::unsetPiece(Piece piece) {
@@ -59,19 +59,22 @@ void Grid::unsetPiece(Piece piece) {
     int r = piece.getCoords()[i][0];
     int c = piece.getCoords()[i][1];
     theGrid[r][c].setData('-');
-  } 
+  }
 }
 
 void Grid::pieceCommand(string cmd) {
     if (cmd == "down") {
         currPiece.down();
     }
+
+    else if (cmd == "clockwise") currPiece.rotateCW();
+    else if (cmd == "counterclockwise") currPiece.rotateCCW();
     try {
         checkPiece(currPiece);
         currPiece.set();
         setPiece(currPiece); // Commit to grid
     } catch (string err) {
-        setPiece(currPiece); 
+        setPiece(currPiece);
         currPiece.revert();
     }
 }

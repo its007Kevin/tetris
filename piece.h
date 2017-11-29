@@ -8,13 +8,13 @@ class Piece {
   // Note the coords represent (row, col) NOT (x,y)
   std::vector<std::vector<int>> coords;
   std::vector<std::vector<int>> potentialCoords;
-  int height;
-  int width;
-  int botLeftx = 0;
-  int botLefty = 0;
+  //int height;
+  //int width;
+  //int botLeftx = 0;
+  //int botLefty = 0;
   char type;
   bool isHeavy = false;
-  
+
  public:
   Piece(char type);
   void rotate(bool isCw);
@@ -22,6 +22,8 @@ class Piece {
   void left();
   void right();
   void down();
+  void rotateCW();
+  void rotateCCW();
   void tryPlace();
   void set();
   void revert();

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   g.setTextDisplay(td);
   g.init(15, 11);
   cout << g;
-  
+
 
   try {
   while (cin >> cmd) {
@@ -49,10 +49,10 @@ int main(int argc, char *argv[]) {
       //g.moveDrop();
     }
     else if (cmd == cw) {
-      //g.rotate(true);
+      g.pieceCommand(cw);
     }
     else if (cmd == ccw) {
-      //g.rotate(false);
+      g.pieceCommand(ccw);
     }
     else if (cmd == lvlup) {
       g.levelUp();
