@@ -6,6 +6,7 @@
 #include "cell.h"
 #include "info.h"
 #include "piece.h"
+#include "subject.h"
 #include "textdisplay.h"
 
 using namespace std;
@@ -19,6 +20,8 @@ bool Grid::isGameOver() const {
 }
 
 void Grid::init(int r, int c) {
+    rows = r;
+    cols = c;
     theGrid.clear();
     for (int i = 0; i < r; i++) { // Generate Rows
         vector<Cell> row;
@@ -38,7 +41,6 @@ void Grid::setPiece(Piece piece) {
         int c = piece.getCoords()[i][1];
         theGrid[r][c].setData(piece.getType());
     }
-    cout << *this;
 }
 
 void Grid::checkPiece(Piece piece) {
@@ -48,8 +50,8 @@ void Grid::checkPiece(Piece piece) {
     for (int i = 0; i < piece.getPotentialCoords().size(); i++) {
         r = piece.getPotentialCoords()[i][0];
         c = piece.getPotentialCoords()[i][1];
-        if (r < 0 || c < 0 || r > 14 || c > 10 || theGrid[r][c].getInfo().data != '-') {
-            throw "invalid move";
+        if (r < 0 || c < 0 || r >= rows || c >= cols || theGrid[r][c].getInfo().data != '-') {
+            throw out_of_range("Boundary");
         }
     }
 }
@@ -65,18 +67,20 @@ void Grid::unsetPiece(Piece piece) {
 void Grid::pieceCommand(string cmd) {
     if (cmd == "down") {
         currPiece.down();
+    } else if (cmd == "clockwise") { 
+        currPiece.rotateCW();
+    } else if (cmd == "counterclockwise") {
+        currPiece.rotateCCW();
     }
-
-    else if (cmd == "clockwise") currPiece.rotateCW();
-    else if (cmd == "counterclockwise") currPiece.rotateCCW();
     try {
         checkPiece(currPiece);
         currPiece.set();
-        setPiece(currPiece); // Commit to grid
-    } catch (string err) {
+        setPiece(currPiece);
+    } catch (out_of_range) {
         setPiece(currPiece);
         currPiece.revert();
     }
+    cout << *this;
 }
 
 void Grid::levelUp() {}
@@ -89,18 +93,11 @@ void Grid::random() {}
 
 void Grid::sequence(std::string file) {}
 
-void Grid::replacePieceWith(char type) {
-  //delete old currPiece??
-  //currPiece = unique_ptr<Piece> {type};
-}
+void Grid::replacePieceWith(char type) {}
 
-void Grid::restart() {
+void Grid::restart() {}
 
-}
-
-void Grid::hint() {
-
-}
+void Grid::hint() {}
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {
     out << *(g.td);

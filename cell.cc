@@ -7,9 +7,7 @@ using namespace std;
 
 Cell::Cell(int r, int c, char data): r{r}, c{c}, data{data} {}
 
-void Cell::notify(Subject &whoFrom) {
-
-}
+void Cell::notify(Subject &whoFrom) {}
 
 Info Cell::getInfo() const {
     Info info;

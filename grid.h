@@ -15,10 +15,10 @@ class Grid {
   std::vector<std::vector<Cell>> theGrid; 
   std::shared_ptr<TextDisplay> td;
   Piece currPiece{'J'};
-  // std::shared_ptr<Piece> currPiece = std::make_shared<Piece>('J');
+  int rows;
+  int cols;
 
  public:
-
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
   bool isGameOver() const;
   void init(int r, int c);

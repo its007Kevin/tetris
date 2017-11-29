@@ -33,66 +33,65 @@ int main(int argc, char *argv[]) {
   g.init(15, 11);
   cout << g;
 
-
   try {
-  while (cin >> cmd) {
-    if (cmd == left) {
-      //g.moveLeft();
-    }
-    else if (cmd == right) {
-      //g.moveRight();
-    }
-    else if (cmd == down) {
-      g.pieceCommand(down);
-    }
-    else if (cmd == drop) {
-      //g.moveDrop();
-    }
-    else if (cmd == cw) {
-      g.pieceCommand(cw);
-    }
-    else if (cmd == ccw) {
-      g.pieceCommand(ccw);
-    }
-    else if (cmd == lvlup) {
-      g.levelUp();
-    }
-    else if (cmd == lvldown) {
-      g.levelDown();
-    }
-    else if (cmd == norand) {
-      string file;
-      cin >> file;
-      g.noRandom(file);
-    }
-    else if (cmd == rand) {
-      g.random();
-    }
-    else if (cmd == seq) {
-      string file;
-      cin >> file;
-      g.sequence(file);
-    }
-    else if (cmd == I) {
-      g.replacePieceWith('I');
-    }
-    else if (cmd == J) {
-      g.replacePieceWith('J');
-    }
-    else if (cmd == L) {
-      g.replacePieceWith('L');
-    }
-    else if (cmd == res) {
-      g.restart();
-    }
-    else if (cmd == hint) {
-      g.hint();
-    }
-    else {
-      cout << "Invalid input" << endl;
+    while (cin >> cmd) {
+      if (cmd == left) {
+
+      }
+      else if (cmd == right) {
+
+      }
+      else if (cmd == down) {
+        g.pieceCommand(down);
+      }
+      else if (cmd == drop) {
+
+      }
+      else if (cmd == cw) {
+        g.pieceCommand(cw);
+      }
+      else if (cmd == ccw) {
+        g.pieceCommand(ccw);
+      }
+      else if (cmd == lvlup) {
+        g.levelUp();
+      }
+      else if (cmd == lvldown) {
+        g.levelDown();
+      }
+      else if (cmd == norand) {
+        string file;
+        cin >> file;
+        g.noRandom(file);
+      }
+      else if (cmd == rand) {
+        g.random();
+      }
+      else if (cmd == seq) {
+        string file;
+        cin >> file;
+        g.sequence(file);
+      }
+      else if (cmd == I) {
+        g.replacePieceWith('I');
+      }
+      else if (cmd == J) {
+        g.replacePieceWith('J');
+      }
+      else if (cmd == L) {
+        g.replacePieceWith('L');
+      }
+      else if (cmd == res) {
+        g.restart();
+      }
+      else if (cmd == hint) {
+        g.hint();
+      }
+      else {
+        cout << "Invalid input" << endl;
+      }
     }
   }
-  }
-  catch (ios::failure &) {}  // Any I/O failure quits
+  catch (ios::failure &) {}
   cout << "Game Over!" << endl;
 }
