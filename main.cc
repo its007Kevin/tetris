@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
   g.setTextDisplay(td);
   g.init(15, 11);
   cout << g;
+  
 
   try {
   while (cin >> cmd) {
