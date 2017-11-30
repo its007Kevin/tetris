@@ -23,9 +23,9 @@ string autoComplete(string input, vector<string> commands) {
 int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-  
+
   vector<string> commands;
-  
+
   string left = "left";
   string right = "right";
   string down = "down";
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   string L = "L";
   string res = "restart";
   string hint = "hint";
-  
+
   commands.emplace_back(left);
   commands.emplace_back(right);
   commands.emplace_back(down);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     while (cin >> cmd) {
       try {
         cmd = autoComplete(cmd, commands);
-      } catch (string err) {
+      } catch (char const* err) {
         cout << err << endl;
         continue;
       }
@@ -134,6 +134,6 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  catch (ios::failure &) {} 
+  catch (ios::failure &) {}
   cout << "Game Over!" << endl;
 }
