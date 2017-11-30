@@ -101,6 +101,9 @@ void Grid::tryPlace() {
         checkPiece(currPiece);
         currPiece.set();
         setPiece(currPiece);
+        if (currPiece.checkHeavy()) {
+          down();
+        }
     } catch (out_of_range) {
         setPiece(currPiece);
         currPiece.revert();
@@ -144,6 +147,11 @@ void Grid::unsetPiece(Piece piece) {
 
 void Grid::spawnNextPiece() {
     currPiece = currLevel->generatePiece();
+    if (levelCount == 3 || levelCount == 4) {
+      currPiece.makeHeavy();
+    } else {
+      currPiece.removeHeavy();
+    }
     setPiece(currPiece);
 }
 

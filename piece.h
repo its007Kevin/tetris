@@ -14,6 +14,8 @@ class Piece {
  public:
   Piece(char type);
   void makeHeavy();
+  void removeHeavy();
+  bool checkHeavy();
 
   // Piece movement
   void left();

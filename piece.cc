@@ -37,6 +37,14 @@ void Piece::makeHeavy() {
   isHeavy = true;
 }
 
+void Piece::removeHeavy() {
+  isHeavy = false;
+}
+
+bool Piece::checkHeavy() {
+  return isHeavy;
+}
+
 void Piece::left() {
   for (int i = 0; i < potentialCoords.size(); i++) {
     potentialCoords[i][1]--;
