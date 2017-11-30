@@ -41,6 +41,8 @@ class Grid {
   void unsetPiece(Piece piece);
   void spawnNextPiece();
 
+  void removeFilledRows();
+
   // Not implemented yet
   void levelUp();
   void levelDown();

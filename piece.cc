@@ -37,6 +37,23 @@ void Piece::makeHeavy() {
   isHeavy = true;
 }
 
+void Piece::left() {
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][1]--;
+  }
+}
+void Piece::right() {
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][1]++;
+  }
+}
+
+void Piece::down() {
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][0]++;
+  }
+}
+
 void Piece::rotateCW() {
   int xMax = potentialCoords[0][1];
   int yMax = potentialCoords[0][0];
@@ -88,14 +105,6 @@ void Piece::rotateCCW() {
   }
 }
 
-vector<vector<int>> Piece::getCoords() {
-  return coords;
-}
-
-vector<vector<int>> Piece::getPotentialCoords() {
-  return potentialCoords;
-}
-
 void Piece::set() {
   coords = potentialCoords;
 }
@@ -104,20 +113,12 @@ void Piece::revert() {
   potentialCoords = coords;
 }
 
-void Piece::down() {
-  for (int i = 0; i < potentialCoords.size(); i++) {
-    potentialCoords[i][0]++;
-  }
+vector<vector<int>> Piece::getCoords() {
+  return coords;
 }
-void Piece::left() {
-  for (int i = 0; i < potentialCoords.size(); i++) {
-    potentialCoords[i][1]--;
-  }
-}
-void Piece::right() {
-  for (int i = 0; i < potentialCoords.size(); i++) {
-    potentialCoords[i][1]++;
-  }
+
+vector<vector<int>> Piece::getPotentialCoords() {
+  return potentialCoords;
 }
 
 char Piece::getType() {

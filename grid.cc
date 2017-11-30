@@ -38,7 +38,19 @@ void Grid::init(int r, int c) {
 
 void Grid::down() {
     currPiece.down();
-    tryPlace();
+    try {
+        checkPiece(currPiece);
+        currPiece.set();
+        setPiece(currPiece);
+    } catch (out_of_range) {
+        setPiece(currPiece);
+        currPiece.revert();
+    } catch (Collision) {
+        setPiece(currPiece);
+        currPiece.revert();
+        spawnNextPiece();
+    }
+    cout << *this;
 }
 
 void Grid::left() {
@@ -68,10 +80,6 @@ void Grid::drop() {
             checkPiece(currPiece);
             currPiece.set();
             setPiece(currPiece);
-        } catch (out_of_range) {
-            setPiece(currPiece);
-            currPiece.revert();
-            break;
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
@@ -93,7 +101,6 @@ void Grid::tryPlace() {
     } catch (Collision) {
         setPiece(currPiece);
         currPiece.revert();
-        spawnNextPiece();
     }
     cout << *this;
 }
@@ -109,7 +116,7 @@ void Grid::checkPiece(Piece piece) {
             throw out_of_range("boundary");
         } else if (r >= rows || theGrid[r][c].getInfo().data != '-') {
             throw Collision();
-        }
+        } 
     }
 }
 
@@ -132,6 +139,11 @@ void Grid::unsetPiece(Piece piece) {
 void Grid::spawnNextPiece() {
     currPiece = currLevel->generatePiece();
     setPiece(currPiece);
+}
+
+void Grid::removeFilledRows() {
+    for (int i = 0; i < theGrid.size(); i++) {
+    }
 }
 
 void Grid::levelUp() {}
