@@ -68,7 +68,11 @@ void Grid::unsetPiece(Piece piece) {
 void Grid::pieceCommand(string cmd) {
     if (cmd == "down") {
         currPiece.down();
-    } else if (cmd == "clockwise") { 
+    } else if (cmd == "left") {
+        currPiece.left();
+    } else if (cmd == "right") {
+        currPiece.right();
+    }else if (cmd == "clockwise") {
         currPiece.rotateCW();
     } else if (cmd == "counterclockwise") {
         currPiece.rotateCCW();

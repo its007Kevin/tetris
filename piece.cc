@@ -109,6 +109,16 @@ void Piece::down() {
     potentialCoords[i][0]++;
   }
 }
+void Piece::left() {
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][1]--;
+  }
+}
+void Piece::right() {
+  for (int i = 0; i < potentialCoords.size(); i++) {
+    potentialCoords[i][1]++;
+  }
+}
 
 char Piece::getType() {
   return type;
