@@ -1,1 +1,2 @@
-main.o: main.cc grid.h cell.h subject.h info.h observer.h textdisplay.h
+main.o: main.cc textdisplay.h observer.h info.h grid.h cell.h subject.h \
+ piece.h

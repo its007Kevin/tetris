@@ -28,9 +28,9 @@ int main(int argc, char *argv[]) {
 
   // Intialize and print empty board
   Grid g;
-  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(15, 11);
+  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
   g.setTextDisplay(td);
-  g.init(15, 11);
+  g.init(18, 11);
   cout << g;
 
   try {
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
         g.pieceCommand(down);
       }
       else if (cmd == drop) {
-
+        g.pieceCommand(drop);
       }
       else if (cmd == cw) {
         g.pieceCommand(cw);

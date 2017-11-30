@@ -1,13 +1,14 @@
 #include <vector>
 #include <iostream>
 #include <vector>
+#include <exception>
 #include <memory>
 #include "grid.h"
 #include "cell.h"
 #include "info.h"
 #include "piece.h"
-#include "subject.h"
 #include "textdisplay.h"
+#include "level.h"
 
 using namespace std;
 
@@ -71,6 +72,22 @@ void Grid::pieceCommand(string cmd) {
         currPiece.rotateCW();
     } else if (cmd == "counterclockwise") {
         currPiece.rotateCCW();
+    } else if (cmd == "drop") {
+        // Call down until it throws an exception
+        while (true) {
+            currPiece.down();
+            try {
+                checkPiece(currPiece);
+                currPiece.set();
+                setPiece(currPiece);
+            } catch (out_of_range) {
+                setPiece(currPiece);
+                currPiece.revert();
+                break;
+            }
+        }
+        cout << *this;
+        return;
     }
     try {
         checkPiece(currPiece);

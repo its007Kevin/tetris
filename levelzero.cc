@@ -4,18 +4,20 @@
 #include <fstream>
 #include <memory>
 
-Piece LevelZero::generatePiece() {
-  //read in sequence.txt
+LevelZero::LevelZero() {
+  //read in pieces from sequence.txt
   std::ifstream myFileStream{"sequence.txt"};
   char c;
   while (myFileStream >> c) {
-    blocks.emplace_back(c); //add them to the queue
+    pieces.emplace_back(c); //add them to the queue
   }
+}
 
-  if (blockCount > blocks.size() - 1) { //reset to the beginning of the queue
-    blockCount = 0;
+Piece LevelZero::generatePiece() {
+  if (pieceCount > pieces.size() - 1) { //reset to the beginning of the queue
+    pieceCount = 0;
   }
-
-  ++blockCount; //increment to get next block
-  return std::make_unique<Piece>(blocks.at(blockCount), isHeavy, brownBlock);
+  Piece generatedPiece{Piece{pieces.at(pieceCount)}};
+  ++pieceCount; //increment to get next block
+  return generatedPiece;
 }

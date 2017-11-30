@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << "Hi Score: " << endl;
     out << "-----------" << endl; 
     out << endl;
-    for (int i = 0; i < td.r; i++) { // y coordinate
+    for (int i = 3; i < td.r; i++) { // y coordinate
         for (int j = 0; j < td.c; j++) { // x coordinate
             out << td.theDisplay[i][j];
         }

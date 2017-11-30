@@ -5,11 +5,10 @@
 #include <vector>
 
 class LevelZero: public Level {
-  bool isHeavy = false;
-  bool brownBlock = false;
-  int blockCount = 0; //will reset to the beginning of the textfile
-  std::vector<char> blocks;
+  int pieceCount = 0; //will reset to the beginning of the textfile
+  std::vector<char> pieces;
 public:
+  LevelZero();
   Piece generatePiece() override;
 };
 

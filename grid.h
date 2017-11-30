@@ -7,6 +7,8 @@
 #include "cell.h"
 #include "info.h"
 #include "piece.h"
+#include "level.h"
+#include "levelzero.h"
 
 class TextDisplay;
 class Observer;
@@ -14,7 +16,9 @@ class Observer;
 class Grid {
   std::vector<std::vector<Cell>> theGrid; 
   std::shared_ptr<TextDisplay> td;
-  Piece currPiece{'J'};
+  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(); 
+  Piece currPiece = currLevel->generatePiece();
+
   int rows;
   int cols;
 
@@ -22,13 +26,15 @@ class Grid {
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
   bool isGameOver() const;
   void init(int r, int c);
+
+  // Piece specific commands
   void pieceCommand(std::string cmd);
   void setPiece(Piece piece); 
   void unsetPiece(Piece piece);
   void checkPiece(Piece piece);
+  void collision(Piece& Piece);
 
   // Not implemented yet
-  void rotate(bool isCw);
   void levelUp();
   void levelDown();
   void noRandom(std::string file);
