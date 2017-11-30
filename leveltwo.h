@@ -10,6 +10,7 @@ protected:
   char pieces[7] = {'S','Z','I','O','T','L','J'};
 public:
   Piece generatePiece() override;
+  Piece generateCenterPiece() override;
 };
 
 #endif

@@ -8,3 +8,8 @@ Piece LevelTwo::generatePiece() {
   Piece generatedPiece{Piece{pieces[randomIndex]}};
   return generatedPiece;
 }
+
+Piece LevelTwo::generateCenterPiece() {
+  Piece centerPiece{Piece{'*'}};
+  return centerPiece;
+}

@@ -8,3 +8,8 @@ Piece LevelFour::generatePiece() {
   Piece generatedPiece{Piece{pieces[randomIndex]}};
   return generatedPiece;
 }
+
+Piece LevelFour::generateCenterPiece() {
+  Piece centerPiece{Piece{'*'}};
+  return centerPiece;
+}
