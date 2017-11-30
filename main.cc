@@ -68,7 +68,6 @@ int main(int argc, char *argv[]) {
   g.setTextDisplay(td);
   g.init(18, 11);
   cout << g;
-
   try {
     while (cin >> cmd) {
       try {
@@ -79,69 +78,44 @@ int main(int argc, char *argv[]) {
       }
       if (cmd == left) {
         g.left();
-      }
-      else if (cmd == right) {
+      } else if (cmd == right) {
         g.right();
-      }
-      else if (cmd == down) {
+      } else if (cmd == down) {
         g.down();
-      }
-      else if (cmd == drop) {
+      } else if (cmd == drop) {
         g.drop();
-      }
-      else if (cmd == cw) {
+      } else if (cmd == cw) {
         g.rotateCW();
-      }
-      else if (cmd == ccw) {
+      } else if (cmd == ccw) {
         g.rotateCCW();
-      }
-      else if (cmd == lvlup) {
-        try {
-          g.levelUp();
-        } catch(char const* err) {
-          cout << err << endl;
-        }
-      }
-      else if (cmd == lvldown) {
-        try {
-          g.levelDown();
-        } catch(char const* err) {
-          cout << err << endl;
-        }
-      }
-      else if (cmd == norand) {
+      } else if (cmd == lvlup) {
+        g.levelUp();
+      } else if (cmd == lvldown) {
+        g.levelDown();
+      } else if (cmd == norand) {
         string file;
         cin >> file;
         g.noRandom(file);
-      }
-      else if (cmd == rand) {
+      } else if (cmd == rand) {
         g.random();
-      }
-      else if (cmd == seq) {
+      } else if (cmd == seq) {
         string file;
         cin >> file;
         g.sequence(file);
-      }
-      else if (cmd == I) {
+      } else if (cmd == I) {
         g.replacePieceWith('I');
-      }
-      else if (cmd == J) {
+      } else if (cmd == J) {
         g.replacePieceWith('J');
-      }
-      else if (cmd == L) {
+      } else if (cmd == L) {
         g.replacePieceWith('L');
-      }
-      else if (cmd == res) {
+      } else if (cmd == res) {
         g.restart();
-      }
-      else if (cmd == hint) {
+      } else if (cmd == hint) {
         g.hint();
-      }
-      else {
+      } else {
         cout << "Invalid input" << endl;
       }
     }
-  }
-  catch (ios::failure &) {}
+  } catch (ios::failure &) {} 
   cout << "Game Over!" << endl;
 }

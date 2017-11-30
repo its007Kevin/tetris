@@ -9,10 +9,6 @@
 #include "piece.h"
 #include "level.h"
 #include "levelzero.h"
-#include "levelone.h"
-#include "leveltwo.h"
-#include "levelthree.h"
-#include "levelfour.h"
 
 class TextDisplay;
 class Observer;
@@ -20,12 +16,9 @@ class Observer;
 class Grid {
   int rows;
   int cols;
-  std::vector<std::vector<Cell>> theGrid;
+  std::vector<std::vector<Cell>> theGrid; 
   std::shared_ptr<TextDisplay> td;
-  int levelCount = 0;
-  const int maxLevel = 4;
-  const int minLevel = 0;
-  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
+  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(); 
   Piece currPiece = currLevel->generatePiece();
 
  public:
@@ -44,14 +37,15 @@ class Grid {
   // Piece interactions with board
   void tryPlace();
   void checkPiece(Piece piece);
-  void setPiece(Piece piece);
+  void setPiece(Piece piece); 
   void unsetPiece(Piece piece);
   void spawnNextPiece();
+
+  void removeFilledRows();
 
   // Not implemented yet
   void levelUp();
   void levelDown();
-  void setLevel();
   void noRandom(std::string file);
   void random();
   void sequence(std::string file);

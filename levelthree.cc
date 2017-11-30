@@ -5,6 +5,5 @@
 
 Piece LevelThree::generatePiece() {
   int randomIndex = rand() % 9;
-  Piece generatedPiece{Piece{pieces[randomIndex]}};
-  return generatedPiece;
+  return std::make_unique<Piece>(pieces[randomIndex], isHeavy, brownBlock);
 }
