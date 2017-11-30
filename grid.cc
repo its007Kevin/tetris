@@ -1,6 +1,5 @@
 #include <vector>
 #include <iostream>
-#include <vector>
 #include <exception>
 #include <memory>
 #include "grid.h"
@@ -9,6 +8,7 @@
 #include "piece.h"
 #include "textdisplay.h"
 #include "level.h"
+#include "collision.h"
 
 using namespace std;
 
@@ -24,9 +24,9 @@ void Grid::init(int r, int c) {
     rows = r;
     cols = c;
     theGrid.clear();
-    for (int i = 0; i < r; i++) { // Generate Rows
+    for (int i = 0; i < r; i++) { 
         vector<Cell> row;
-        for (int j= 0; j < c; j++) { // Generate Columns
+        for (int j= 0; j < c; j++) { 
             Cell cell{i, j, '-'};
             cell.attach(td);
             row.emplace_back(cell);
@@ -36,12 +36,66 @@ void Grid::init(int r, int c) {
     setPiece(currPiece);
 }
 
-void Grid::setPiece(Piece piece) {
-    for (int i = 0; i < piece.getCoords().size(); i++) {
-        int r = piece.getCoords()[i][0];
-        int c = piece.getCoords()[i][1];
-        theGrid[r][c].setData(piece.getType());
+void Grid::down() {
+    currPiece.down();
+    tryPlace();
+}
+
+void Grid::left() {
+    currPiece.left();
+    tryPlace();
+}
+
+void Grid::right() {
+    currPiece.right();
+    tryPlace();
+}
+
+void Grid::rotateCW() {
+    currPiece.rotateCW();
+    tryPlace();
+}
+
+void Grid::rotateCCW() {
+    currPiece.rotateCCW();
+    tryPlace();
+}
+
+void Grid::drop() {
+    while (true) {
+        currPiece.down();
+        try {
+            checkPiece(currPiece);
+            currPiece.set();
+            setPiece(currPiece);
+        } catch (out_of_range) {
+            setPiece(currPiece);
+            currPiece.revert();
+            break;
+        } catch (Collision) {
+            setPiece(currPiece);
+            currPiece.revert();
+            spawnNextPiece();
+            break;
+        }
     }
+    cout << *this;
+}
+
+void Grid::tryPlace() {
+    try {
+        checkPiece(currPiece);
+        currPiece.set();
+        setPiece(currPiece);
+    } catch (out_of_range) {
+        setPiece(currPiece);
+        currPiece.revert();
+    } catch (Collision) {
+        setPiece(currPiece);
+        currPiece.revert();
+        spawnNextPiece();
+    }
+    cout << *this;
 }
 
 void Grid::checkPiece(Piece piece) {
@@ -51,9 +105,19 @@ void Grid::checkPiece(Piece piece) {
     for (int i = 0; i < piece.getPotentialCoords().size(); i++) {
         r = piece.getPotentialCoords()[i][0];
         c = piece.getPotentialCoords()[i][1];
-        if (r < 0 || c < 0 || r >= rows || c >= cols || theGrid[r][c].getInfo().data != '-') {
-            throw out_of_range("Boundary");
+        if (r < 0 || c < 0 || c >= cols) {
+            throw out_of_range("boundary");
+        } else if (r >= rows || theGrid[r][c].getInfo().data != '-') {
+            throw Collision();
         }
+    }
+}
+
+void Grid::setPiece(Piece piece) {
+    for (int i = 0; i < piece.getCoords().size(); i++) {
+        int r = piece.getCoords()[i][0];
+        int c = piece.getCoords()[i][1];
+        theGrid[r][c].setData(piece.getType());
     }
 }
 
@@ -65,43 +129,9 @@ void Grid::unsetPiece(Piece piece) {
   }
 }
 
-void Grid::pieceCommand(string cmd) {
-    if (cmd == "down") {
-        currPiece.down();
-    } else if (cmd == "left") {
-        currPiece.left();
-    } else if (cmd == "right") {
-        currPiece.right();
-    }else if (cmd == "clockwise") {
-        currPiece.rotateCW();
-    } else if (cmd == "counterclockwise") {
-        currPiece.rotateCCW();
-    } else if (cmd == "drop") {
-        // Call down until it throws an exception
-        while (true) {
-            currPiece.down();
-            try {
-                checkPiece(currPiece);
-                currPiece.set();
-                setPiece(currPiece);
-            } catch (out_of_range) {
-                setPiece(currPiece);
-                currPiece.revert();
-                break;
-            }
-        }
-        cout << *this;
-        return;
-    }
-    try {
-        checkPiece(currPiece);
-        currPiece.set();
-        setPiece(currPiece);
-    } catch (out_of_range) {
-        setPiece(currPiece);
-        currPiece.revert();
-    }
-    cout << *this;
+void Grid::spawnNextPiece() {
+    currPiece = currLevel->generatePiece();
+    setPiece(currPiece);
 }
 
 void Grid::levelUp() {}

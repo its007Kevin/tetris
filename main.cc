@@ -73,27 +73,27 @@ int main(int argc, char *argv[]) {
     while (cin >> cmd) {
       try {
         cmd = autoComplete(cmd, commands);
-      } catch (char const* err) {
+      } catch (string err) {
         cout << err << endl;
         continue;
       }
       if (cmd == left) {
-        g.pieceCommand(left);
+        g.left();
       }
       else if (cmd == right) {
-        g.pieceCommand(right);
+        g.right();
       }
       else if (cmd == down) {
-        g.pieceCommand(down);
+        g.down();
       }
       else if (cmd == drop) {
-        g.pieceCommand(drop);
+        g.drop();
       }
       else if (cmd == cw) {
-        g.pieceCommand(cw);
+        g.rotateCW();
       }
       else if (cmd == ccw) {
-        g.pieceCommand(ccw);
+        g.rotateCCW();
       }
       else if (cmd == lvlup) {
         g.levelUp();

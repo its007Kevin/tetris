@@ -14,25 +14,32 @@ class TextDisplay;
 class Observer;
 
 class Grid {
+  int rows;
+  int cols;
   std::vector<std::vector<Cell>> theGrid; 
   std::shared_ptr<TextDisplay> td;
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(); 
   Piece currPiece = currLevel->generatePiece();
-
-  int rows;
-  int cols;
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
   bool isGameOver() const;
   void init(int r, int c);
 
-  // Piece specific commands
-  void pieceCommand(std::string cmd);
+  // Piece Movement specific commands
+  void down();
+  void left();
+  void right();
+  void rotateCW();
+  void rotateCCW();
+  void drop();
+
+  // Piece interactions with board
+  void tryPlace();
+  void checkPiece(Piece piece);
   void setPiece(Piece piece); 
   void unsetPiece(Piece piece);
-  void checkPiece(Piece piece);
-  void collision(Piece& Piece);
+  void spawnNextPiece();
 
   // Not implemented yet
   void levelUp();
