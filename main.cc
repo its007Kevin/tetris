@@ -89,9 +89,17 @@ int main(int argc, char *argv[]) {
       } else if (cmd == ccw) {
         g.rotateCCW();
       } else if (cmd == lvlup) {
-        g.levelUp();
+          try {
+            g.levelUp();
+          } catch(char const* err) {
+            cout << err << endl;
+          }
       } else if (cmd == lvldown) {
-        g.levelDown();
+        try {
+          g.levelDown();
+        } catch(char const* err) {
+          cout << err << endl;
+        }
       } else if (cmd == norand) {
         string file;
         cin >> file;
@@ -116,6 +124,6 @@ int main(int argc, char *argv[]) {
         cout << "Invalid input" << endl;
       }
     }
-  } catch (ios::failure &) {} 
+  } catch (ios::failure &) {}
   cout << "Game Over!" << endl;
 }

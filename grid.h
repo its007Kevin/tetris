@@ -16,9 +16,12 @@ class Observer;
 class Grid {
   int rows;
   int cols;
-  std::vector<std::vector<Cell>> theGrid; 
+  std::vector<std::vector<Cell>> theGrid;
   std::shared_ptr<TextDisplay> td;
-  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(); 
+  int levelCount = 0;
+  const int maxLevel = 4;
+  const int minLevel = 0;
+  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
   Piece currPiece = currLevel->generatePiece();
 
  public:
@@ -37,7 +40,7 @@ class Grid {
   // Piece interactions with board
   void tryPlace();
   void checkPiece(Piece piece);
-  void setPiece(Piece piece); 
+  void setPiece(Piece piece);
   void unsetPiece(Piece piece);
   void spawnNextPiece();
 
@@ -46,6 +49,7 @@ class Grid {
   // Not implemented yet
   void levelUp();
   void levelDown();
+  void setLevel();
   void noRandom(std::string file);
   void random();
   void sequence(std::string file);

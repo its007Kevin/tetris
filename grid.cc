@@ -9,6 +9,12 @@
 #include "textdisplay.h"
 #include "level.h"
 #include "collision.h"
+#include "levelzero.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
+#include "levelfour.h"
+
 
 using namespace std;
 
@@ -24,9 +30,9 @@ void Grid::init(int r, int c) {
     rows = r;
     cols = c;
     theGrid.clear();
-    for (int i = 0; i < r; i++) { 
+    for (int i = 0; i < r; i++) {
         vector<Cell> row;
-        for (int j= 0; j < c; j++) { 
+        for (int j= 0; j < c; j++) {
             Cell cell{i, j, '-'};
             cell.attach(td);
             row.emplace_back(cell);
@@ -116,7 +122,7 @@ void Grid::checkPiece(Piece piece) {
             throw out_of_range("boundary");
         } else if (r >= rows || theGrid[r][c].getInfo().data != '-') {
             throw Collision();
-        } 
+        }
     }
 }
 
@@ -146,9 +152,37 @@ void Grid::removeFilledRows() {
     }
 }
 
-void Grid::levelUp() {}
+void Grid::levelUp() {
+  if (levelCount < maxLevel) {
+    ++levelCount;
+    setLevel();
+  } else {
+    throw "Reached Max Level";
+  }
+}
 
-void Grid::levelDown() {}
+void Grid::levelDown() {
+  if (levelCount > minLevel) {
+    --levelCount;
+    setLevel();
+  } else {
+    throw "Reached Min Level";
+  }
+}
+
+void Grid::setLevel() {
+  if (levelCount == 0) {
+    currLevel = std::make_shared<LevelZero>();
+  } else if (levelCount == 1) {
+    currLevel = std::make_shared<LevelOne>();
+  } else if (levelCount == 2) {
+    currLevel = std::make_shared<LevelTwo>();
+  } else if (levelCount == 3) {
+    currLevel = std::make_shared<LevelThree>();
+  } else if (levelCount == 4) {
+    currLevel = std::make_shared<LevelFour>();
+  }
+}
 
 void Grid::noRandom(std::string file) {}
 

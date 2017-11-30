@@ -5,5 +5,6 @@
 
 Piece LevelTwo::generatePiece() {
   int randomIndex = rand() % 7;
-  return std::make_unique<Piece>(pieces[randomIndex], isHeavy, brownBlock);
+  Piece generatedPiece{Piece{pieces[randomIndex]}};
+  return generatedPiece;
 }
