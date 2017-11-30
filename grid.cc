@@ -55,6 +55,7 @@ void Grid::down() {
         setPiece(currPiece);
         currPiece.revert();
         spawnNextPiece();
+        ++blocksWithoutClear;
     }
     cout << *this;
 }
@@ -90,10 +91,27 @@ void Grid::drop() {
             setPiece(currPiece);
             currPiece.revert();
             spawnNextPiece();
+            ++blocksWithoutClear;
             break;
         }
     }
     cout << *this;
+}
+
+void Grid::dropCenter(Piece &centerPiece) {
+  while (true) {
+      centerPiece.down();
+      try {
+          checkPiece(centerPiece);
+          centerPiece.set();
+          setPiece(centerPiece);
+      } catch (Collision) {
+          setPiece(centerPiece);
+          centerPiece.revert();
+          break;
+      }
+  }
+  cout << *this;
 }
 
 void Grid::tryPlace() {
@@ -147,6 +165,13 @@ void Grid::unsetPiece(Piece piece) {
 
 void Grid::spawnNextPiece() {
     currPiece = currLevel->generatePiece();
+    if (levelCount == 4) {
+      if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
+        Piece centerPiece = currLevel->generateCenterPiece();
+        setPiece(centerPiece);
+        dropCenter(centerPiece);
+      }
+    }
     if (levelCount == 3 || levelCount == 4) {
       currPiece.makeHeavy();
     } else {

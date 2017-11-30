@@ -28,7 +28,7 @@ Piece::Piece(char type): type{type} {
     coords = {{3, 0}, {3, 1}, {3, 2}, {4, 1}};
   }
   else if (type == '*') {
-    coords = {{3, 0}};
+    coords = {{3, 5}};
   }
   potentialCoords = coords;
 }

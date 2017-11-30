@@ -10,6 +10,7 @@ class LevelZero: public Level {
 public:
   LevelZero();
   Piece generatePiece() override;
+  Piece generateCenterPiece() override;
 };
 
 #endif

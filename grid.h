@@ -21,6 +21,7 @@ class Grid {
   int levelCount = 0;
   const int maxLevel = 4;
   const int minLevel = 0;
+  int blocksWithoutClear = 0;
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
   Piece currPiece = currLevel->generatePiece();
 
@@ -36,6 +37,7 @@ class Grid {
   void rotateCW();
   void rotateCCW();
   void drop();
+  void dropCenter(Piece&);
 
   // Piece interactions with board
   void tryPlace();
