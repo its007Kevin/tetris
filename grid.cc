@@ -15,7 +15,6 @@
 #include "levelthree.h"
 #include "levelfour.h"
 
-
 using namespace std;
 
 void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
