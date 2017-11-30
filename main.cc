@@ -20,6 +20,7 @@ string autoComplete(string input, vector<string> commands) {
   else throw "Multiple commands contain '" + input + "' as a substring";
 }
 
+
 int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
@@ -68,69 +69,85 @@ int main(int argc, char *argv[]) {
   g.setTextDisplay(td);
   g.init(18, 11);
   cout << g;
+  //int repeat = 1;
 
   try {
     while (cin >> cmd) {
+//cout << "AAAAAAAA " << cmd.substr(0, 0).length() << " AAAAAAA " << endl;
+      int repeat = 1;
+      int i = 0;
+      while (i < cmd.length() && isdigit(cmd[i])) {
+        i++;
+      }
+      if (i != 0) repeat = stoi(cmd.substr(0, i));
+      cmd = cmd.substr(i, cmd.length());
+      if (cmd.length() == 0) {
+        cin >> cmd;
+      }
+      //for (int j = 0; j < i; j++) {
       try {
         cmd = autoComplete(cmd, commands);
       } catch (char const* err) {
         cout << err << endl;
         continue;
       }
-      if (cmd == left) {
-        g.left();
-      }
-      else if (cmd == right) {
-        g.right();
-      }
-      else if (cmd == down) {
-        g.down();
-      }
-      else if (cmd == drop) {
-        g.drop();
-      }
-      else if (cmd == cw) {
-        g.rotateCW();
-      }
-      else if (cmd == ccw) {
-        g.rotateCCW();
-      }
-      else if (cmd == lvlup) {
-        g.levelUp();
-      }
-      else if (cmd == lvldown) {
-        g.levelDown();
-      }
-      else if (cmd == norand) {
-        string file;
-        cin >> file;
-        g.noRandom(file);
-      }
-      else if (cmd == rand) {
-        g.random();
-      }
-      else if (cmd == seq) {
-        string file;
-        cin >> file;
-        g.sequence(file);
-      }
-      else if (cmd == I) {
-        g.replacePieceWith('I');
-      }
-      else if (cmd == J) {
-        g.replacePieceWith('J');
-      }
-      else if (cmd == L) {
-        g.replacePieceWith('L');
-      }
-      else if (cmd == res) {
-        g.restart();
-      }
-      else if (cmd == hint) {
-        g.hint();
-      }
-      else {
-        cout << "Invalid input" << endl;
+      for (int j = 0; j < repeat; j++) {
+        if (cmd == left) {
+          g.left();
+        }
+        else if (cmd == right) {
+          g.right();
+        }
+        else if (cmd == down) {
+          g.down();
+        }
+        else if (cmd == drop) {
+          g.drop();
+        }
+        else if (cmd == cw) {
+          g.rotateCW();
+        }
+        else if (cmd == ccw) {
+          g.rotateCCW();
+        }
+        else if (cmd == lvlup) {
+          g.levelUp();
+        }
+        else if (cmd == lvldown) {
+          g.levelDown();
+        }
+        else if (cmd == norand) {
+          string file;
+          cin >> file;
+          g.noRandom(file);
+        }
+        else if (cmd == rand) {
+          g.random();
+        }
+        else if (cmd == seq) {
+          string file;
+          cin >> file;
+          g.sequence(file);
+        }
+        else if (cmd == I) {
+          g.replacePieceWith('I');
+        }
+        else if (cmd == J) {
+          g.replacePieceWith('J');
+        }
+        else if (cmd == L) {
+          g.replacePieceWith('L');
+        }
+        else if (cmd == res) {
+          g.restart();
+        }
+        else if (cmd == hint) {
+          g.hint();
+        }
+        else {
+          cout << "Invalid input" << endl;
+          break;
+        }
       }
     }
   }
