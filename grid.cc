@@ -9,6 +9,11 @@
 #include "textdisplay.h"
 #include "level.h"
 #include "collision.h"
+#include "levelzero.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
+#include "levelfour.h"
 
 using namespace std;
 
@@ -24,9 +29,9 @@ void Grid::init(int r, int c) {
     rows = r;
     cols = c;
     theGrid.clear();
-    for (int i = 0; i < r; i++) { 
+    for (int i = 0; i < r; i++) {
         vector<Cell> row;
-        for (int j= 0; j < c; j++) { 
+        for (int j= 0; j < c; j++) {
             Cell cell{i, j, '-'};
             cell.attach(td);
             row.emplace_back(cell);
@@ -38,19 +43,7 @@ void Grid::init(int r, int c) {
 
 void Grid::down() {
     currPiece.down();
-    try {
-        checkPiece(currPiece);
-        currPiece.set();
-        setPiece(currPiece);
-    } catch (out_of_range) {
-        setPiece(currPiece);
-        currPiece.revert();
-    } catch (Collision) {
-        setPiece(currPiece);
-        currPiece.revert();
-        spawnNextPiece();
-    }
-    cout << *this;
+    tryPlace();
 }
 
 void Grid::left() {
@@ -80,6 +73,10 @@ void Grid::drop() {
             checkPiece(currPiece);
             currPiece.set();
             setPiece(currPiece);
+        } catch (out_of_range) {
+            setPiece(currPiece);
+            currPiece.revert();
+            break;
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
@@ -101,6 +98,7 @@ void Grid::tryPlace() {
     } catch (Collision) {
         setPiece(currPiece);
         currPiece.revert();
+        spawnNextPiece();
     }
     cout << *this;
 }
@@ -116,7 +114,7 @@ void Grid::checkPiece(Piece piece) {
             throw out_of_range("boundary");
         } else if (r >= rows || theGrid[r][c].getInfo().data != '-') {
             throw Collision();
-        } 
+        }
     }
 }
 
@@ -126,6 +124,7 @@ void Grid::setPiece(Piece piece) {
         int c = piece.getCoords()[i][1];
         theGrid[r][c].setData(piece.getType());
     }
+    cout << "Current Level: " << levelCount << endl;
 }
 
 void Grid::unsetPiece(Piece piece) {
@@ -141,14 +140,40 @@ void Grid::spawnNextPiece() {
     setPiece(currPiece);
 }
 
-void Grid::removeFilledRows() {
-    for (int i = 0; i < theGrid.size(); i++) {
-    }
+void Grid::levelUp() {
+  if (levelCount < maxLevel) {
+    ++levelCount;
+    setLevel();
+  } else {
+    throw "Reached Max Level";
+  }
+
+  //spawnNextPiece();
 }
 
-void Grid::levelUp() {}
+void Grid::levelDown() {
+  if (levelCount > minLevel) {
+    --levelCount;
+    setLevel();
+  } else {
+    throw "Reached Min Level";
+  }
+  //spawnNextPiece();
+}
 
-void Grid::levelDown() {}
+void Grid::setLevel() {
+  if (levelCount == 0) {
+    currLevel = std::make_shared<LevelZero>();
+  } else if (levelCount == 1) {
+    currLevel = std::make_shared<LevelOne>();
+  } else if (levelCount == 2) {
+    currLevel = std::make_shared<LevelTwo>();
+  } else if (levelCount == 3) {
+    currLevel = std::make_shared<LevelThree>();
+  } else if (levelCount == 4) {
+    currLevel = std::make_shared<LevelFour>();
+  }
+}
 
 void Grid::noRandom(std::string file) {}
 

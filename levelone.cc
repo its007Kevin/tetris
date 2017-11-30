@@ -5,5 +5,7 @@
 
 Piece LevelOne::generatePiece() {
   int randomIndex = rand() % 12;
-  return std::make_unique<Piece>(pieces[randomIndex], isHeavy, brownBlock);
+  Piece generatedPiece{Piece{pieces[randomIndex]}};
+  return generatedPiece;
+  //return std::make_unique<Piece>(pieces[randomIndex], isHeavy, brownBlock);
 }
