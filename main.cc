@@ -79,10 +79,10 @@ int main(int argc, char *argv[]) {
       continue;
     }
     if (cmd == left) {
-      //g.moveLeft();
+      g.pieceCommand(left);
     }
     else if (cmd == right) {
-      //g.moveRight();
+      g.pieceCommand(right);
     }
     else if (cmd == down) {
       g.pieceCommand(down);
