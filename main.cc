@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
+#include <exception>
 #include "textdisplay.h"
 #include "grid.h"
-#include <exception>
 
 using namespace std;
 
