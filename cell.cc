@@ -20,4 +20,4 @@ void Cell::setData(char d) {
   notifyObservers();
 }
 
-void Cell::shiftRows() { r++; }
+void Cell::shiftRows(int n) { r += n; }
