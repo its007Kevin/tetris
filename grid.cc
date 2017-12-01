@@ -53,6 +53,7 @@ void Grid::down() {
     } catch (Collision) {
         setPiece(currPiece);
         currPiece.revert();
+        removeFilledRows();
         spawnNextPiece();
         ++blocksWithoutClear;
     }
@@ -89,6 +90,7 @@ void Grid::drop() {
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
+            removeFilledRows();
             spawnNextPiece();
             ++blocksWithoutClear;
             break;
@@ -107,6 +109,7 @@ void Grid::dropCenter(Piece &centerPiece) {
       } catch (Collision) {
           setPiece(centerPiece);
           centerPiece.revert();
+          removeFilledRows();
           break;
       }
   }
@@ -180,7 +183,30 @@ void Grid::spawnNextPiece() {
 }
 
 void Grid::removeFilledRows() {
+    bool isFilled;
     for (int i = 0; i < theGrid.size(); i++) {
+        isFilled = true;
+        for (int j = 0; j < theGrid[i].size(); j++) {
+            if (theGrid[i][j].getInfo().data == '-') {
+                isFilled = false;
+            }
+        }
+        if (isFilled == true) {
+            theGrid.erase(theGrid.begin() + i);
+            vector<Cell> emptyRow;
+            for (int j = 0; j < cols; j++) {
+                Cell cell{-1, j, '-'};
+                cell.attach(td);
+                emptyRow.emplace_back(cell);
+            }
+            theGrid.emplace(theGrid.begin(), emptyRow);
+        }
+    }
+    for (int i = -1; i < theGrid.size(); i++) {
+        for (int j = 0; j < theGrid[i].size(); j++) {
+            theGrid[i][j].notifyObservers();
+            theGrid[i][j].shiftRows();
+        }
     }
 }
 

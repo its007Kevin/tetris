@@ -91,12 +91,14 @@ int main(int argc, char *argv[]) {
       } else if (cmd == lvlup) {
           try {
             g.levelUp();
+            cout << g;
           } catch(char const* err) {
             cout << err << endl;
           }
       } else if (cmd == lvldown) {
         try {
           g.levelDown();
+          cout << g;
         } catch(char const* err) {
           cout << err << endl;
         }
