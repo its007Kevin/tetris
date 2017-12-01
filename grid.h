@@ -11,6 +11,7 @@
 #include "levelzero.h"
 
 class TextDisplay;
+class GraphicsDisplay;
 class Observer;
 
 class Grid {
@@ -18,6 +19,7 @@ class Grid {
   int cols;
   std::vector<std::vector<Cell>> theGrid;
   std::shared_ptr<TextDisplay> td;
+  std::shared_ptr<GraphicsDisplay> gd;
   int levelCount = 0;
   const int maxLevel = 4;
   const int minLevel = 0;
@@ -27,6 +29,7 @@ class Grid {
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
+  void setGraphicsDisplay(std::shared_ptr<GraphicsDisplay> gd);
   bool isGameOver() const;
   void init(int r, int c);
 
@@ -60,6 +63,9 @@ class Grid {
   void hint();
 
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
+
+  // Debugging
+  void printCellCoords();
 };
 
 #endif

@@ -7,6 +7,7 @@
 #include "info.h"
 #include "piece.h"
 #include "textdisplay.h"
+#include "graphicsdisplay.h"
 #include "level.h"
 #include "collision.h"
 #include "levelzero.h"
@@ -19,6 +20,10 @@ using namespace std;
 
 void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
     this->td = td;
+}
+
+void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
+    this->gd = gd;
 }
 
 bool Grid::isGameOver() const {
@@ -34,6 +39,7 @@ void Grid::init(int r, int c) {
         for (int j= 0; j < c; j++) {
             Cell cell{i, j, '-'};
             cell.attach(td);
+            cell.attach(gd);
             row.emplace_back(cell);
         }
         theGrid.emplace_back(row);
@@ -185,7 +191,7 @@ void Grid::spawnNextPiece() {
 void Grid::removeFilledRows() {
     bool isFilled;
     vector<int> rowsToDelete;
-    // Store the indexes of rowsToDelete in vector
+    // Find the indexes of the rows to delete.
     for (int i = 0; i < theGrid.size(); i++) {
         isFilled = true;
         for (int j = 0; j < theGrid[i].size(); j++) {
@@ -200,7 +206,6 @@ void Grid::removeFilledRows() {
     for (int i = 0; i < rowsToDelete.size(); i++) {
         theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
     }
-
     int offset = rowsToDelete.size();
     int index = 0;
     for (int i = 0; i < rowsToDelete.size(); i++) {
@@ -211,21 +216,30 @@ void Grid::removeFilledRows() {
       }
       offset--;
     }
-
     for (int i = 0; i < rowsToDelete.size(); i++) {
       vector<Cell> row;
-      for (int j= 0; j < cols; j++) {
+      for (int j = 0; j < cols; j++) {
           Cell cell{i, j, '-'};
           cell.attach(td);
           row.emplace_back(cell);
       }
       theGrid.emplace(theGrid.begin(), row);
     }
-
     for (int i = 0; i < theGrid.size(); i++) {
       for (int j = 0; j < theGrid[i].size(); j++) {
         theGrid[i][j].notifyObservers();
       }
+    }
+    printCellCoords();
+}
+
+void Grid::printCellCoords() {
+    for (int i = 0; i < theGrid.size(); i++) {
+      cout << "[";
+      for (int j = 0; j < theGrid[i].size(); j++) {
+        cout << "(" << theGrid[i][j].getInfo().row << "," << theGrid[i][j].getInfo().col << ") ";
+      }
+      cout << "]" << endl;
     }
 }
 
@@ -265,9 +279,9 @@ void Grid::noRandom(std::string file) {}
 
 void Grid::random() {}
 
-void Grid::sequence(std::string file) {}
-
 void Grid::replacePieceWith(char type) {}
+
+void Grid::sequence(std::string file) {}
 
 void Grid::restart() {}
 

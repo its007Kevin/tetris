@@ -2,6 +2,7 @@
 #include <string>
 #include <exception>
 #include "textdisplay.h"
+#include "graphicsdisplay.h"
 #include "grid.h"
 #include <exception>
 #include <fstream>
@@ -23,14 +24,10 @@ string autoComplete(string input, vector<string> commands) {
   else throw "Multiple commands contain '" + input + "' as a substring";
 }
 
-
 int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-
   vector<string> commands;
-
-  vector<string> sequence;
 
   string left = "left";
   string right = "right";
@@ -68,88 +65,12 @@ int main(int argc, char *argv[]) {
 
   Grid g;
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
+  shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
   g.setTextDisplay(td);
+  g.setGraphicsDisplay(gd);
   g.init(18, 11);
   cout << g;
-  
-//   try {
-//   std::ifstream myFileStream{"testsequence.txt"};
-//   string s;
-//   while (myFileStream >> s) {
-//     sequence.emplace_back(s); //add them to the queue
-//     cout << s << endl;
-//   }
-//   for (int i = 0; i < sequence.size(); ++i) {
-//     if (sequence.at(i) == left) {
-//       g.left();
-//     }
-//     else if (sequence.at(i) == right) {
-//       g.right();
-//     }
-//     else if (sequence.at(i) == down) {
-//       g.down();
-//     }
-//     else if (sequence.at(i) == drop) {
-//       g.drop();
-//     }
-//     else if (sequence.at(i) == cw) {
-//       g.rotateCW();
-//     }
-//     else if (sequence.at(i) == ccw) {
-//       g.rotateCCW();
-//     }
-//     else if (sequence.at(i) == lvlup) {
-//       try {
-//         g.levelUp();
-//         cout << g;
-//       } catch (char const* err) {
-//         cout << err << endl;
-//       }
-//     }
-//     else if (sequence.at(i) == lvldown) {
-//       try {
-//         g.levelDown();
-//         cout << g;
-//       } catch (char const* err) {
-//         cout << err << endl;
-//       }
-//     }
-//     else if (sequence.at(i) == norand) {
-//       string file;
-//       cin >> file;
-//       g.noRandom(file);
-//     }
-//     else if (sequence.at(i) == rand) {
-//       g.random();
-//     }
-//     else if (sequence.at(i) == seq) {
-//       string file;
-//       cin >> file;
-//       g.sequence(file);
-//     }
-//     else if (sequence.at(i) == I) {
-//       g.replacePieceWith('I');
-//     }
-//     else if (sequence.at(i) == J) {
-//       g.replacePieceWith('J');
-//     }
-//     else if (sequence.at(i) == L) {
-//       g.replacePieceWith('L');
-//     }
-//     else if (sequence.at(i) == res) {
-//       g.restart();
-//     }
-//     else if (sequence.at(i) == hint) {
-//       g.hint();
-//     }
-//     else {
-//       cout << "Invalid input" << endl;
-//       break;
-//     }
-//   }
-// } catch (...) {
-//   cout << "Missing testsequence.txt" << endl;
-// }
+
   try {
     while (cin >> cmd) {
       int repeat = 1;
@@ -211,11 +132,6 @@ int main(int argc, char *argv[]) {
         else if (cmd == rand) {
           g.random();
         }
-        else if (cmd == seq) {
-          string file;
-          cin >> file;
-          g.sequence(file);
-        }
         else if (cmd == I) {
           g.replacePieceWith('I');
         }
@@ -230,6 +146,98 @@ int main(int argc, char *argv[]) {
         }
         else if (cmd == hint) {
           g.hint();
+        }
+        else if (cmd == seq) {
+          string file;
+          cin >> file;
+           try {
+            ifstream myFileStream{file};
+            string fileCommand;
+            while (myFileStream >> fileCommand) {
+              cmd = fileCommand;
+              int repeat = 1;
+              int i = 0;
+              while (i < cmd.length() && isdigit(cmd[i])) {
+                i++;
+              }
+              if (i != 0) repeat = stoi(cmd.substr(0, i));
+              cmd = cmd.substr(i, cmd.length());
+              if (cmd.length() == 0) {
+                cin >> cmd;
+              }
+              try {
+                cmd = autoComplete(cmd, commands);
+              } catch (char const* err) {
+                cout << err << endl;
+                continue;
+              }
+              for (int j = 0; j < repeat; j++) {
+                if (cmd == left) {
+                  g.left();
+                }
+                else if (cmd == right) {
+                  g.right();
+                }
+                else if (cmd == down) {
+                  g.down();
+                }
+                else if (cmd == drop) {
+                  g.drop();
+                }
+                else if (cmd == cw) {
+                  g.rotateCW();
+                }
+                else if (cmd == ccw) {
+                  g.rotateCCW();
+                }
+                else if (cmd == lvlup) {
+                  try {
+                    g.levelUp();
+                    cout << g;
+                  } catch (char const* err) {
+                    cout << err << endl;
+                  }
+                }
+                else if (cmd == lvldown) {
+                  try {
+                    g.levelDown();
+                    cout << g;
+                  } catch (char const* err) {
+                    cout << err << endl;
+                  }
+                }
+                else if (cmd == norand) {
+                  string file;
+                  cin >> file;
+                  g.noRandom(file);
+                }
+                else if (cmd == rand) {
+                  g.random();
+                }
+                else if (cmd == I) {
+                  g.replacePieceWith('I');
+                }
+                else if (cmd == J) {
+                  g.replacePieceWith('J');
+                }
+                else if (cmd == L) {
+                  g.replacePieceWith('L');
+                }
+                else if (cmd == res) {
+                  g.restart();
+                }
+                else if (cmd == hint) {
+                  g.hint();
+                }
+                else {
+                  cout << "Invalid input" << endl;
+                  break;
+                }
+              }
+            }
+          } catch (...) {
+            cout << "File not found" << endl;
+          }
         }
         else {
           cout << "Invalid input" << endl;
