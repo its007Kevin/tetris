@@ -3,12 +3,9 @@
 #include <exception>
 #include "textdisplay.h"
 #include "grid.h"
-<<<<<<< HEAD
-=======
 #include <exception>
 #include <fstream>
 #include <vector>
->>>>>>> fde9411f92b82155aad2694f93b132f81b7faab6
 
 using namespace std;
 
@@ -75,89 +72,84 @@ int main(int argc, char *argv[]) {
   g.init(18, 11);
   cout << g;
 
-  try {
-  std::ifstream myFileStream{"testsequence.txt"};
-  string s;
-  while (myFileStream >> s) {
-    sequence.emplace_back(s); //add them to the queue
-    cout << s << endl;
-  }
-
-  for (int i = 0; i < sequence.size(); ++i) {
-    if (sequence.at(i) == left) {
-      g.left();
-    }
-    else if (sequence.at(i) == right) {
-      g.right();
-    }
-    else if (sequence.at(i) == down) {
-      g.down();
-    }
-    else if (sequence.at(i) == drop) {
-      g.drop();
-    }
-    else if (sequence.at(i) == cw) {
-      g.rotateCW();
-    }
-    else if (sequence.at(i) == ccw) {
-      g.rotateCCW();
-    }
-    else if (sequence.at(i) == lvlup) {
-      try {
-        g.levelUp();
-        cout << g;
-      } catch (char const* err) {
-        cout << err << endl;
-      }
-    }
-    else if (sequence.at(i) == lvldown) {
-      try {
-        g.levelDown();
-        cout << g;
-      } catch (char const* err) {
-        cout << err << endl;
-      }
-    }
-    else if (sequence.at(i) == norand) {
-      string file;
-      cin >> file;
-      g.noRandom(file);
-    }
-    else if (sequence.at(i) == rand) {
-      g.random();
-    }
-    else if (sequence.at(i) == seq) {
-      string file;
-      cin >> file;
-      g.sequence(file);
-    }
-    else if (sequence.at(i) == I) {
-      g.replacePieceWith('I');
-    }
-    else if (sequence.at(i) == J) {
-      g.replacePieceWith('J');
-    }
-    else if (sequence.at(i) == L) {
-      g.replacePieceWith('L');
-    }
-    else if (sequence.at(i) == res) {
-      g.restart();
-    }
-    else if (sequence.at(i) == hint) {
-      g.hint();
-    }
-    else {
-      cout << "Invalid input" << endl;
-      break;
-    }
-  }
-} catch (...) {
-  cout << "Missing testsequence.txt" << endl;
-}
-
-
-
-
+//   try {
+//   std::ifstream myFileStream{"testsequence.txt"};
+//   string s;
+//   while (myFileStream >> s) {
+//     sequence.emplace_back(s); //add them to the queue
+//     cout << s << endl;
+//   }
+//   for (int i = 0; i < sequence.size(); ++i) {
+//     if (sequence.at(i) == left) {
+//       g.left();
+//     }
+//     else if (sequence.at(i) == right) {
+//       g.right();
+//     }
+//     else if (sequence.at(i) == down) {
+//       g.down();
+//     }
+//     else if (sequence.at(i) == drop) {
+//       g.drop();
+//     }
+//     else if (sequence.at(i) == cw) {
+//       g.rotateCW();
+//     }
+//     else if (sequence.at(i) == ccw) {
+//       g.rotateCCW();
+//     }
+//     else if (sequence.at(i) == lvlup) {
+//       try {
+//         g.levelUp();
+//         cout << g;
+//       } catch (char const* err) {
+//         cout << err << endl;
+//       }
+//     }
+//     else if (sequence.at(i) == lvldown) {
+//       try {
+//         g.levelDown();
+//         cout << g;
+//       } catch (char const* err) {
+//         cout << err << endl;
+//       }
+//     }
+//     else if (sequence.at(i) == norand) {
+//       string file;
+//       cin >> file;
+//       g.noRandom(file);
+//     }
+//     else if (sequence.at(i) == rand) {
+//       g.random();
+//     }
+//     else if (sequence.at(i) == seq) {
+//       string file;
+//       cin >> file;
+//       g.sequence(file);
+//     }
+//     else if (sequence.at(i) == I) {
+//       g.replacePieceWith('I');
+//     }
+//     else if (sequence.at(i) == J) {
+//       g.replacePieceWith('J');
+//     }
+//     else if (sequence.at(i) == L) {
+//       g.replacePieceWith('L');
+//     }
+//     else if (sequence.at(i) == res) {
+//       g.restart();
+//     }
+//     else if (sequence.at(i) == hint) {
+//       g.hint();
+//     }
+//     else {
+//       cout << "Invalid input" << endl;
+//       break;
+//     }
+//   }
+// } catch (...) {
+//   cout << "Missing testsequence.txt" << endl;
+// }
   try {
     while (cin >> cmd) {
       int repeat = 1;
