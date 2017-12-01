@@ -47,6 +47,7 @@ void Grid::init(int r, int c) {
     setPiece(currPiece);
 }
 
+// If down results in a collision, spawn the next piece
 void Grid::down() {
     currPiece.down();
     try {
@@ -109,19 +110,20 @@ void Grid::dropCenter(Piece &centerPiece) {
   while (true) {
       centerPiece.down();
       try {
-          checkPiece(centerPiece);
-          centerPiece.set();
-          setPiece(centerPiece);
+        checkPiece(centerPiece);
+        centerPiece.set();
+        setPiece(centerPiece);
       } catch (Collision) {
-          setPiece(centerPiece);
-          centerPiece.revert();
-          removeFilledRows();
-          break;
+        setPiece(centerPiece);
+        centerPiece.revert();
+        removeFilledRows();
+        break;
       }
   }
   cout << *this;
 }
 
+// If a collision occured on left/right commands
 void Grid::tryPlace() {
     try {
         checkPiece(currPiece);
@@ -216,7 +218,7 @@ void Grid::removeFilledRows() {
       }
       offset--;
     }
-    for (int i = 0; i < rowsToDelete.size(); i++) {
+    for (int i = rowsToDelete.size() - 1; i >= 0; i--) {
       vector<Cell> row;
       for (int j = 0; j < cols; j++) {
           Cell cell{i, j, '-'};
@@ -225,12 +227,12 @@ void Grid::removeFilledRows() {
       }
       theGrid.emplace(theGrid.begin(), row);
     }
+    // Update textDisplay
     for (int i = 0; i < theGrid.size(); i++) {
       for (int j = 0; j < theGrid[i].size(); j++) {
         theGrid[i][j].notifyObservers();
       }
     }
-    printCellCoords();
 }
 
 void Grid::printCellCoords() {
