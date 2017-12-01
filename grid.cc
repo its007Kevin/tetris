@@ -202,9 +202,44 @@ void Grid::removeFilledRows() {
             theGrid[rowsToDelete.at(i)][j].setData('-');
         }
     }
-    // for (int i = 0; i < rowsToDelete.size(); i++) {
-    //     theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
-    // }
+    for (int i = 0; i < rowsToDelete.size(); i++) {
+        theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
+    }
+
+    int offset = rowsToDelete.size();
+    int index = 0;
+    for (int i = 0; i < rowsToDelete.size(); i++) {
+      for (; index < rowsToDelete[i] - rowsToDelete.size() + offset; index++) {
+        for (int j = 0; j < cols; j++) {
+          theGrid[index][j].shiftRows(offset); //+= offset;
+        }
+      }
+      offset--;
+    }
+
+    for (int i = 0; i < rowsToDelete.size(); i++) {
+      vector<Cell> row;
+      for (int j= 0; j < cols; j++) {
+          Cell cell{i, j, '-'};
+          cell.attach(td);
+          row.emplace_back(cell);
+      }
+      theGrid.emplace(theGrid.begin(), row);
+    }
+
+    for (int i = 0; i < theGrid.size(); i++) {
+      for (int j = 0; j < theGrid[i].size(); j++) {
+        theGrid[i][j].notifyObservers();
+      }
+    }
+    /*cout << "AAAAAAAAAAAAAAAAAA" << endl;
+    for (int i = 0; i < theGrid.size(); i++) {
+      for (int j = 0; j < theGrid[i].size(); j++) {
+        cout << theGrid[i][j].getInfo().data;
+      }
+      cout << " CC " << theGrid[i][0].getInfo().row << endl;
+    }
+    cout << "BBBBBBBBBBBBBBBBB" << endl;*/
 }
 
 void Grid::levelUp() {
