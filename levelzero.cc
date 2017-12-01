@@ -21,3 +21,8 @@ Piece LevelZero::generatePiece() {
   ++pieceCount; //increment to get next block
   return generatedPiece;
 }
+
+Piece LevelZero::generateCenterPiece() {
+  Piece centerPiece{Piece{'*'}};
+  return centerPiece;
+}

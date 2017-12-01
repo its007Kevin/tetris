@@ -150,7 +150,6 @@ int main(int argc, char *argv[]) {
         }
       }
     }
-  }
-  catch (ios::failure &) {}
+  } catch (ios::failure &) {}
   cout << "Game Over!" << endl;
 }

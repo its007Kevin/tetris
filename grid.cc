@@ -9,6 +9,11 @@
 #include "textdisplay.h"
 #include "level.h"
 #include "collision.h"
+#include "levelzero.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
+#include "levelfour.h"
 
 using namespace std;
 
@@ -24,9 +29,9 @@ void Grid::init(int r, int c) {
     rows = r;
     cols = c;
     theGrid.clear();
-    for (int i = 0; i < r; i++) { 
+    for (int i = 0; i < r; i++) {
         vector<Cell> row;
-        for (int j= 0; j < c; j++) { 
+        for (int j= 0; j < c; j++) {
             Cell cell{i, j, '-'};
             cell.attach(td);
             row.emplace_back(cell);
@@ -38,7 +43,20 @@ void Grid::init(int r, int c) {
 
 void Grid::down() {
     currPiece.down();
-    tryPlace();
+    try {
+        checkPiece(currPiece);
+        currPiece.set();
+        setPiece(currPiece);
+    } catch (out_of_range) {
+        setPiece(currPiece);
+        currPiece.revert();
+    } catch (Collision) {
+        setPiece(currPiece);
+        currPiece.revert();
+        spawnNextPiece();
+        ++blocksWithoutClear;
+    }
+    cout << *this;
 }
 
 void Grid::left() {
@@ -68,18 +86,31 @@ void Grid::drop() {
             checkPiece(currPiece);
             currPiece.set();
             setPiece(currPiece);
-        } catch (out_of_range) {
-            setPiece(currPiece);
-            currPiece.revert();
-            break;
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
             spawnNextPiece();
+            ++blocksWithoutClear;
             break;
         }
     }
     cout << *this;
+}
+
+void Grid::dropCenter(Piece &centerPiece) {
+  while (true) {
+      centerPiece.down();
+      try {
+          checkPiece(centerPiece);
+          centerPiece.set();
+          setPiece(centerPiece);
+      } catch (Collision) {
+          setPiece(centerPiece);
+          centerPiece.revert();
+          break;
+      }
+  }
+  cout << *this;
 }
 
 void Grid::tryPlace() {
@@ -87,13 +118,15 @@ void Grid::tryPlace() {
         checkPiece(currPiece);
         currPiece.set();
         setPiece(currPiece);
+        if (currPiece.checkHeavy()) {
+          down();
+        }
     } catch (out_of_range) {
         setPiece(currPiece);
         currPiece.revert();
     } catch (Collision) {
         setPiece(currPiece);
         currPiece.revert();
-        spawnNextPiece();
     }
     cout << *this;
 }
@@ -131,12 +164,57 @@ void Grid::unsetPiece(Piece piece) {
 
 void Grid::spawnNextPiece() {
     currPiece = currLevel->generatePiece();
+    if (levelCount == 4) {
+      if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
+        Piece centerPiece = currLevel->generateCenterPiece();
+        setPiece(centerPiece);
+        dropCenter(centerPiece);
+      }
+    }
+    if (levelCount == 3 || levelCount == 4) {
+      currPiece.makeHeavy();
+    } else {
+      currPiece.removeHeavy();
+    }
     setPiece(currPiece);
 }
 
-void Grid::levelUp() {}
+void Grid::removeFilledRows() {
+    for (int i = 0; i < theGrid.size(); i++) {
+    }
+}
 
-void Grid::levelDown() {}
+void Grid::levelUp() {
+  if (levelCount < maxLevel) {
+    ++levelCount;
+    setLevel();
+  } else {
+    throw "Reached Max Level";
+  }
+}
+
+void Grid::levelDown() {
+  if (levelCount > minLevel) {
+    --levelCount;
+    setLevel();
+  } else {
+    throw "Reached Min Level";
+  }
+}
+
+void Grid::setLevel() {
+  if (levelCount == 0) {
+    currLevel = std::make_shared<LevelZero>();
+  } else if (levelCount == 1) {
+    currLevel = std::make_shared<LevelOne>();
+  } else if (levelCount == 2) {
+    currLevel = std::make_shared<LevelTwo>();
+  } else if (levelCount == 3) {
+    currLevel = std::make_shared<LevelThree>();
+  } else if (levelCount == 4) {
+    currLevel = std::make_shared<LevelFour>();
+  }
+}
 
 void Grid::noRandom(std::string file) {}
 
