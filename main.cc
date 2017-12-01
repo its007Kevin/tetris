@@ -3,12 +3,8 @@
 #include <exception>
 #include "textdisplay.h"
 #include "grid.h"
-<<<<<<< HEAD
-=======
-#include <exception>
 #include <fstream>
 #include <vector>
->>>>>>> fde9411f92b82155aad2694f93b132f81b7faab6
 
 using namespace std;
 
