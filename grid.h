@@ -26,11 +26,12 @@ class Grid {
   int blocksWithoutClear = 0;
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
   Piece currPiece = currLevel->generatePiece();
+  Piece nextPiece = currLevel->generatePiece();
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
   void setGraphicsDisplay(std::shared_ptr<GraphicsDisplay> gd);
-  bool isGameOver() const;
+  bool checkIsGameOver();
   void init(int r, int c);
 
   // Piece Movement specific commands

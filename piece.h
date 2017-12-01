@@ -30,6 +30,9 @@ class Piece {
   std::vector<std::vector<int>> getCoords();
   std::vector<std::vector<int>> getPotentialCoords();
   char getType();
+
+  // View
+  std::vector<std::vector<char>> render();
 };
 
 #endif

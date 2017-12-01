@@ -26,9 +26,15 @@ void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
     this->gd = gd;
 }
 
-bool Grid::isGameOver() const {
-    return false;
-}
+bool Grid::checkIsGameOver() {
+    for (int i = 0; i < currPiece.getCoords().size(); i++) {
+        int r = currPiece.getCoords()[i][0];
+        int c = currPiece.getCoords()[i][1];
+        if (theGrid[r][c].getInfo().data != ' ') {
+            throw "GameOver";
+        }
+    }
+} 
 
 void Grid::init(int r, int c) {
     rows = r;
@@ -37,7 +43,7 @@ void Grid::init(int r, int c) {
     for (int i = 0; i < r; i++) {
         vector<Cell> row;
         for (int j= 0; j < c; j++) {
-            Cell cell{i, j, '-'};
+            Cell cell{i, j, ' '};
             cell.attach(td);
             //cell.attach(gd);
             row.emplace_back(cell);
@@ -45,6 +51,7 @@ void Grid::init(int r, int c) {
         theGrid.emplace_back(row);
     }
     setPiece(currPiece);
+    td->setNextPiece(nextPiece.render());
 }
 
 // If down results in a collision, spawn the next piece
@@ -151,7 +158,7 @@ void Grid::checkPiece(Piece piece) {
         c = piece.getPotentialCoords()[i][1];
         if (r < 0 || c < 0 || c >= cols) {
             throw out_of_range("boundary");
-        } else if (r >= rows || theGrid[r][c].getInfo().data != '-') {
+        } else if (r >= rows || theGrid[r][c].getInfo().data != ' ') {
             throw Collision();
         }
     }
@@ -169,12 +176,15 @@ void Grid::unsetPiece(Piece piece) {
   for (int i = 0; i < piece.getCoords().size(); i++) {
     int r = piece.getCoords()[i][0];
     int c = piece.getCoords()[i][1];
-    theGrid[r][c].setData('-');
+    theGrid[r][c].setData(' ');
   }
 }
 
 void Grid::spawnNextPiece() {
-    currPiece = currLevel->generatePiece();
+    currPiece = nextPiece;
+    nextPiece = currLevel->generatePiece();
+    td->setNextPiece(nextPiece.render());
+    checkIsGameOver();
     if (levelCount == 4) {
       if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
         Piece centerPiece = currLevel->generateCenterPiece();
@@ -183,9 +193,9 @@ void Grid::spawnNextPiece() {
       }
     }
     if (levelCount == 3 || levelCount == 4) {
-      currPiece.makeHeavy();
+      nextPiece.makeHeavy();
     } else {
-      currPiece.removeHeavy();
+      nextPiece.removeHeavy();
     }
     setPiece(currPiece);
 }
@@ -197,7 +207,7 @@ void Grid::removeFilledRows() {
     for (int i = 0; i < theGrid.size(); i++) {
         isFilled = true;
         for (int j = 0; j < theGrid[i].size(); j++) {
-            if (theGrid[i][j].getInfo().data == '-') {
+            if (theGrid[i][j].getInfo().data == ' ') {
                 isFilled = false;
             }
         }
@@ -221,7 +231,7 @@ void Grid::removeFilledRows() {
     for (int i = rowsToDelete.size() - 1; i >= 0; i--) {
       vector<Cell> row;
       for (int j = 0; j < cols; j++) {
-          Cell cell{i, j, '-'};
+          Cell cell{i, j, ' '};
           cell.attach(td);
           row.emplace_back(cell);
       }
@@ -249,6 +259,7 @@ void Grid::levelUp() {
   if (levelCount < maxLevel) {
     ++levelCount;
     setLevel();
+    td->setLevel(levelCount);
   } else {
     throw "Reached Max Level";
   }
@@ -258,6 +269,7 @@ void Grid::levelDown() {
   if (levelCount > minLevel) {
     --levelCount;
     setLevel();
+    td->setLevel(levelCount);
   } else {
     throw "Reached Min Level";
   }

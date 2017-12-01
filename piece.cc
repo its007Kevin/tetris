@@ -7,13 +7,13 @@ using namespace std;
 
 Piece::Piece(char type): type{type} {
   if (type == 'I') {
-    coords = {{3, 0}, {4, 0}, {5, 0}, {6, 0}};
+    coords = {{3, 0}, {3, 1}, {3, 2}, {3, 3}};
   }
   else if (type == 'J') {
-    coords = {{5, 0}, {3, 1}, {4, 1}, {5, 1}};
+    coords = {{3, 0}, {4, 0}, {4, 1}, {4, 2}};
   }
   else if (type == 'L') {
-    coords = {{3, 0}, {4, 0}, {5, 0}, {5,1}};
+    coords = {{3, 2}, {4, 0}, {4, 1}, {4, 2}};
   }
   else if (type == 'O') {
     coords = {{3, 0}, {3, 1}, {4, 0}, {4, 1}};
@@ -131,4 +131,27 @@ vector<vector<int>> Piece::getPotentialCoords() {
 
 char Piece::getType() {
   return type;
+}
+
+vector<vector<char>> Piece::render() {
+  // Create a grid with 2 rows and 4 columns
+  // (This is the max space a piece can take up)
+  vector<vector<char>> grid;
+  for (int i = 0; i < 2; i++) {
+    vector<char> row;
+    for (int j = 0; j < 4; j++) {
+      row.emplace_back(' ');
+    }
+    grid.emplace_back(row);
+  }
+  vector<vector<int>> renderCoords = coords;
+  for (int i = 0; i < renderCoords.size(); i++) {
+    renderCoords[i][0] -= 3;
+  }
+  for (int i = 0; i < renderCoords.size(); i++) {
+    int row = renderCoords[i][0];
+    int col = renderCoords[i][1];
+    grid[row][col] = type;
+  }
+  return grid;
 }

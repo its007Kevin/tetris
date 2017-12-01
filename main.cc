@@ -245,6 +245,6 @@ int main(int argc, char *argv[]) {
         }
       }
     }
-  } catch (ios::failure &) {}
+  } catch (...) {}
   cout << "Game Over!" << endl;
 }
