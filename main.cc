@@ -61,19 +61,14 @@ int main(int argc, char *argv[]) {
   commands.emplace_back(res);
   commands.emplace_back(hint);
 
-  //commands.emplace_back(left, right, down, drop, cw, ccw, lvlup, lvldown, norand, rand, seq, I, J, L, res, hint);
-
-  // Intialize and print empty board
   Grid g;
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
   g.setTextDisplay(td);
   g.init(18, 11);
   cout << g;
-  //int repeat = 1;
 
   try {
     while (cin >> cmd) {
-//cout << "AAAAAAAA " << cmd.substr(0, 0).length() << " AAAAAAA " << endl;
       int repeat = 1;
       int i = 0;
       while (i < cmd.length() && isdigit(cmd[i])) {
@@ -84,7 +79,6 @@ int main(int argc, char *argv[]) {
       if (cmd.length() == 0) {
         cin >> cmd;
       }
-      //for (int j = 0; j < i; j++) {
       try {
         cmd = autoComplete(cmd, commands);
       } catch (char const* err) {
@@ -111,10 +105,20 @@ int main(int argc, char *argv[]) {
           g.rotateCCW();
         }
         else if (cmd == lvlup) {
-          g.levelUp();
+          try {
+            g.levelUp();
+            cout << g;
+          } catch (char const* err) {
+            cout << err << endl;
+          }
         }
         else if (cmd == lvldown) {
-          g.levelDown();
+          try {
+            g.levelDown();
+            cout << g;
+          } catch (char const* err) {
+            cout << err << endl;
+          }
         }
         else if (cmd == norand) {
           string file;
@@ -150,7 +154,6 @@ int main(int argc, char *argv[]) {
         }
       }
     }
-  }
-  catch (ios::failure &) {}
+  } catch (ios::failure &) {}
   cout << "Game Over!" << endl;
 }
