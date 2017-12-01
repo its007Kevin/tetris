@@ -15,10 +15,15 @@ string autoComplete(string input, vector<string> commands) {
       output = commands[i];
     }
   }
-  if (counter == 1) return output;
-  else if (counter == 0) throw "Invalid move";
-  else throw "Multiple commands contain '" + input + "' as a substring";
+  if (counter == 1) {
+    return output;
+  } else if (counter == 0) {
+    throw "Invalid move";
+  } else {
+    throw "Multiple commands contain '" + input + "' as a substring";
+  }
 }
+
 
 int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
@@ -60,16 +65,25 @@ int main(int argc, char *argv[]) {
   commands.emplace_back(res);
   commands.emplace_back(hint);
 
-  //commands.emplace_back(left, right, down, drop, cw, ccw, lvlup, lvldown, norand, rand, seq, I, J, L, res, hint);
-
-  // Intialize and print empty board
   Grid g;
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
   g.setTextDisplay(td);
   g.init(18, 11);
   cout << g;
+
   try {
     while (cin >> cmd) {
+      int repeat = 1;
+      int i = 0;
+      while (i < cmd.length() && isdigit(cmd[i])) {
+        i++;
+      }
+      if (i != 0) {
+        repeat = stoi(cmd.substr(0, i));
+      cmd = cmd.substr(i, cmd.length());
+      if (cmd.length() == 0) {
+        cin >> cmd;
+      }
       try {
         cmd = autoComplete(cmd, commands);
       } catch (char const* err) {
