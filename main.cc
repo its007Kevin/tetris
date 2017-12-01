@@ -80,6 +80,7 @@ int main(int argc, char *argv[]) {
       }
       if (i != 0) {
         repeat = stoi(cmd.substr(0, i));
+      }
       cmd = cmd.substr(i, cmd.length());
       if (cmd.length() == 0) {
         cin >> cmd;
