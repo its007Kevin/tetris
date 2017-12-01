@@ -39,7 +39,7 @@ void Grid::init(int r, int c) {
         for (int j= 0; j < c; j++) {
             Cell cell{i, j, '-'};
             cell.attach(td);
-            cell.attach(gd);
+            //cell.attach(gd);
             row.emplace_back(cell);
         }
         theGrid.emplace_back(row);

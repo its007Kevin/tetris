@@ -2,7 +2,7 @@
 #include <string>
 #include <exception>
 #include "textdisplay.h"
-#include "graphicsdisplay.h"
+//#include "graphicsdisplay.h"
 #include "grid.h"
 #include <exception>
 #include <fstream>
@@ -65,9 +65,9 @@ int main(int argc, char *argv[]) {
 
   Grid g;
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
-  shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
+  //shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
   g.setTextDisplay(td);
-  g.setGraphicsDisplay(gd);
+  //g.setGraphicsDisplay(gd);
   g.init(18, 11);
   cout << g;
 
