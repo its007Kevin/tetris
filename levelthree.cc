@@ -8,8 +8,3 @@ Piece LevelThree::generatePiece() {
   Piece generatedPiece{Piece{pieces[randomIndex]}};
   return generatedPiece;
 }
-
-Piece LevelThree::generateCenterPiece() {
-  Piece centerPiece{Piece{'*'}};
-  return centerPiece;
-}

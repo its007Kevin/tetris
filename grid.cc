@@ -185,7 +185,7 @@ void Grid::spawnNextPiece() {
 void Grid::removeFilledRows() {
     bool isFilled;
     vector<int> rowsToDelete;
-    // Checks for rows to delete
+    // Store the indexes of rowsToDelete in vector
     for (int i = 0; i < theGrid.size(); i++) {
         isFilled = true;
         for (int j = 0; j < theGrid[i].size(); j++) {
@@ -195,11 +195,6 @@ void Grid::removeFilledRows() {
         }
         if (isFilled == true) {
             rowsToDelete.emplace_back(i);
-        }
-    }
-    for (int i = 0; i < rowsToDelete.size(); i++) {
-        for (int j = 0; j < cols; j++) {
-            theGrid[rowsToDelete.at(i)][j].setData('-');
         }
     }
     for (int i = 0; i < rowsToDelete.size(); i++) {
@@ -232,14 +227,6 @@ void Grid::removeFilledRows() {
         theGrid[i][j].notifyObservers();
       }
     }
-    /*cout << "AAAAAAAAAAAAAAAAAA" << endl;
-    for (int i = 0; i < theGrid.size(); i++) {
-      for (int j = 0; j < theGrid[i].size(); j++) {
-        cout << theGrid[i][j].getInfo().data;
-      }
-      cout << " CC " << theGrid[i][0].getInfo().row << endl;
-    }
-    cout << "BBBBBBBBBBBBBBBBB" << endl;*/
 }
 
 void Grid::levelUp() {

@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   g.setTextDisplay(td);
   g.init(18, 11);
   cout << g;
-
+  
 //   try {
 //   std::ifstream myFileStream{"testsequence.txt"};
 //   string s;
