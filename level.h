@@ -5,7 +5,7 @@
 class Level {
 public:
   virtual Piece generatePiece() = 0;
-  virtual Piece generateCenterPiece() = 0;
+  virtual Piece generateCenterPiece() {}
 };
 
 #endif
