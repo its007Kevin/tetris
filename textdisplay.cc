@@ -28,27 +28,29 @@ void TextDisplay::setNextPiece(vector<vector<char>> nextPiece) {
     this->nextPiece = nextPiece;
 }
 
-vector<vector<char>> TextDisplay::getNextPiece() const {
-    return nextPiece;
-}
-
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << endl;
     out << "Level: " << td.level << endl;
     out << "Score: " << endl;
     out << "Hi Score: " << endl;
-    out << "-----------" << endl; 
+    for (int i = 0; i < td.c; i++) {
+        out << "-";
+    }
+    out << endl; 
     for (int i = 3; i < td.r; i++) { // y coordinate
         for (int j = 0; j < td.c; j++) { // x coordinate
             out << td.theDisplay[i][j];
         }
         out << endl;
     }
-    out << "-----------" << endl;
+    for (int i = 0; i < td.c; i++) {
+        out << "-";
+    }
+    out << endl; 
     out << "Next: " << endl;
-    for (int i = 0; i < td.getNextPiece().size(); i++) {
-        for (int j = 0; j < td.getNextPiece()[i].size(); j++) {
-            out << td.getNextPiece()[i][j];
+    for (int i = 0; i < td.nextPiece.size(); i++) {
+        for (int j = 0; j < td.nextPiece[i].size(); j++) {
+            out << td.nextPiece[i][j];
         }
         out << endl;
     }

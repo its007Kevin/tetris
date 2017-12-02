@@ -25,8 +25,8 @@ class Grid {
   const int minLevel = 0;
   int blocksWithoutClear = 0;
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
-  Piece currPiece = currLevel->generatePiece();
-  Piece nextPiece = currLevel->generatePiece();
+  Piece currPiece{'I'};
+  Piece nextPiece{'J'};
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
@@ -49,18 +49,16 @@ class Grid {
   void setPiece(Piece piece);
   void unsetPiece(Piece piece);
   void spawnNextPiece();
-
   void removeFilledRows();
+  void restart();
 
-  // Not implemented yet
   void levelUp();
   void levelDown();
-  void setLevel();
+  void setLevel(int level);
+  // Not implemented yet
   void noRandom(std::string file);
   void random();
-  void sequence(std::string file);
   void replacePieceWith(char type);
-  void restart();
   void hint();
 
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);

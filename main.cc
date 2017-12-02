@@ -6,7 +6,11 @@
 #include "grid.h"
 #include <exception>
 #include <fstream>
+#include <sstream>
+#include <memory>
 #include <vector>
+#include "multiplecommands.h"
+#include "invalidmove.h"
 
 using namespace std;
 
@@ -19,9 +23,13 @@ string autoComplete(string input, vector<string> commands) {
       output = commands[i];
     }
   }
-  if (counter == 1) return output;
-  else if (counter == 0) throw "Invalid move";
-  else throw "Multiple commands contain '" + input + "' as a substring";
+  if (counter == 1) {
+    return output;
+  } else if (counter == 0) {
+    throw InvalidMove();
+  } else {
+    throw MultipleCommands(input);
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -43,6 +51,10 @@ int main(int argc, char *argv[]) {
   string I = "I";
   string J = "J";
   string L = "L";
+  string O = "O";
+  string S = "S";
+  string Z = "Z";
+  string T = "T";
   string res = "restart";
   string hint = "hint";
 
@@ -64,10 +76,27 @@ int main(int argc, char *argv[]) {
   commands.emplace_back(hint);
 
   Grid g;
+  // NEED to initialize displays first because setlevel updates textdisplay
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
   //shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
   g.setTextDisplay(td);
   //g.setGraphicsDisplay(gd);
+  if (argc > 1) {
+    for(int i = 1; i < argc; i++) {
+      if (string(argv[i]) == "-startlevel") {
+          istringstream iss{argv[i + 1]};
+          int level;
+          iss >> level;
+          g.setLevel(level);
+          i++;
+      } else if (string(argv[i]) == "-scriptfile") {
+          istringstream iss{argv[i + 1]};
+          string file;
+          iss >> file;
+          // Still need to do
+      }
+    }
+  }
   g.init(18, 11);
   cout << g;
 
@@ -83,10 +112,13 @@ int main(int argc, char *argv[]) {
       if (cmd.length() == 0) {
         cin >> cmd;
       }
-      try {
+      try { 
         cmd = autoComplete(cmd, commands);
-      } catch (char const* err) {
-        cout << err << endl;
+      } catch (InvalidMove &err) {
+        cout << err.what() << endl;
+        continue;
+      } catch (MultipleCommands &err) {
+        cout << err.what() << endl;
         continue;
       }
       for (int j = 0; j < repeat; j++) {
@@ -112,16 +144,18 @@ int main(int argc, char *argv[]) {
           try {
             g.levelUp();
             cout << g;
-          } catch (char const* err) {
-            cout << err << endl;
+          } catch (exception& err) {
+            cout << err.what() << endl;
+            cout << g;
           }
         }
         else if (cmd == lvldown) {
           try {
             g.levelDown();
             cout << g;
-          } catch (char const* err) {
-            cout << err << endl;
+          } catch (exception& err) {
+            cout << err.what() << endl;
+            cout << g;
           }
         }
         else if (cmd == norand) {
@@ -141,6 +175,18 @@ int main(int argc, char *argv[]) {
         else if (cmd == L) {
           g.replacePieceWith('L');
         }
+        else if (cmd == O) {
+          g.replacePieceWith('O');
+        }
+        else if (cmd == S) {
+          g.replacePieceWith('S');
+        }
+        else if (cmd == Z) {
+          g.replacePieceWith('Z');
+        }
+        else if (cmd == T) {
+          g.replacePieceWith('T');
+        }
         else if (cmd == res) {
           g.restart();
         }
@@ -150,101 +196,14 @@ int main(int argc, char *argv[]) {
         else if (cmd == seq) {
           string file;
           cin >> file;
-           try {
-            ifstream myFileStream{file};
-            string fileCommand;
-            while (myFileStream >> fileCommand) {
-              cmd = fileCommand;
-              int repeat = 1;
-              int i = 0;
-              while (i < cmd.length() && isdigit(cmd[i])) {
-                i++;
-              }
-              if (i != 0) repeat = stoi(cmd.substr(0, i));
-              cmd = cmd.substr(i, cmd.length());
-              if (cmd.length() == 0) {
-                cin >> cmd;
-              }
-              try {
-                cmd = autoComplete(cmd, commands);
-              } catch (char const* err) {
-                cout << err << endl;
-                continue;
-              }
-              for (int j = 0; j < repeat; j++) {
-                if (cmd == left) {
-                  g.left();
-                }
-                else if (cmd == right) {
-                  g.right();
-                }
-                else if (cmd == down) {
-                  g.down();
-                }
-                else if (cmd == drop) {
-                  g.drop();
-                }
-                else if (cmd == cw) {
-                  g.rotateCW();
-                }
-                else if (cmd == ccw) {
-                  g.rotateCCW();
-                }
-                else if (cmd == lvlup) {
-                  try {
-                    g.levelUp();
-                    cout << g;
-                  } catch (char const* err) {
-                    cout << err << endl;
-                  }
-                }
-                else if (cmd == lvldown) {
-                  try {
-                    g.levelDown();
-                    cout << g;
-                  } catch (char const* err) {
-                    cout << err << endl;
-                  }
-                }
-                else if (cmd == norand) {
-                  string file;
-                  cin >> file;
-                  g.noRandom(file);
-                }
-                else if (cmd == rand) {
-                  g.random();
-                }
-                else if (cmd == I) {
-                  g.replacePieceWith('I');
-                }
-                else if (cmd == J) {
-                  g.replacePieceWith('J');
-                }
-                else if (cmd == L) {
-                  g.replacePieceWith('L');
-                }
-                else if (cmd == res) {
-                  g.restart();
-                }
-                else if (cmd == hint) {
-                  g.hint();
-                }
-                else {
-                  cout << "Invalid input" << endl;
-                  break;
-                }
-              }
-            }
-          } catch (...) {
-            cout << "File not found" << endl;
-          }
-        }
-        else {
+          // Try not to nest the entire main function again
+        } else {
           cout << "Invalid input" << endl;
           break;
         }
       }
     }
-  } catch (...) {}
-  cout << "Game Over!" << endl;
+  } catch (...) {
+    cout << "Game Over!" << endl;
+  }
 }

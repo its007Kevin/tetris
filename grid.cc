@@ -10,6 +10,8 @@
 #include "graphicsdisplay.h"
 #include "level.h"
 #include "collision.h"
+#include "maxlevel.h"
+#include "minlevel.h"
 #include "levelzero.h"
 #include "levelone.h"
 #include "leveltwo.h"
@@ -50,6 +52,8 @@ void Grid::init(int r, int c) {
         }
         theGrid.emplace_back(row);
     }
+    currPiece = currLevel->generatePiece();
+    nextPiece = currLevel->generatePiece();
     setPiece(currPiece);
     td->setNextPiece(nextPiece.render());
 }
@@ -192,11 +196,6 @@ void Grid::spawnNextPiece() {
         dropCenter(centerPiece);
       }
     }
-    if (levelCount == 3 || levelCount == 4) {
-      nextPiece.makeHeavy();
-    } else {
-      nextPiece.removeHeavy();
-    }
     setPiece(currPiece);
 }
 
@@ -212,6 +211,7 @@ void Grid::removeFilledRows() {
             }
         }
         if (isFilled == true) {
+            blocksWithoutClear = 0;
             rowsToDelete.emplace_back(i);
         }
     }
@@ -258,24 +258,26 @@ void Grid::printCellCoords() {
 void Grid::levelUp() {
   if (levelCount < maxLevel) {
     ++levelCount;
-    setLevel();
+    setLevel(levelCount);
     td->setLevel(levelCount);
   } else {
-    throw "Reached Max Level";
+    throw MaxLevel();
   }
 }
 
 void Grid::levelDown() {
   if (levelCount > minLevel) {
     --levelCount;
-    setLevel();
+    setLevel(levelCount);
     td->setLevel(levelCount);
   } else {
-    throw "Reached Min Level";
+    throw MinLevel();
   }
 }
 
-void Grid::setLevel() {
+void Grid::setLevel(int level) {
+  levelCount = level;
+  td->setLevel(level);
   if (levelCount == 0) {
     currLevel = std::make_shared<LevelZero>();
   } else if (levelCount == 1) {
@@ -293,11 +295,23 @@ void Grid::noRandom(std::string file) {}
 
 void Grid::random() {}
 
-void Grid::replacePieceWith(char type) {}
+void Grid::replacePieceWith(char type) {
+    unsetPiece(currPiece);
+    Piece piece{type};
+    currPiece = piece;
+    setPiece(currPiece);
+    cout << *this;
+}
 
-void Grid::sequence(std::string file) {}
-
-void Grid::restart() {}
+void Grid::restart() {
+  for (int i = 0; i < theGrid.size(); i++) {
+    for (int j = 0; j < theGrid[i].size(); j++) {
+        theGrid[i][j].setData(' ');
+    }
+  }
+  setPiece(currPiece);
+  td->setNextPiece(nextPiece.render());
+}
 
 void Grid::hint() {}
 
