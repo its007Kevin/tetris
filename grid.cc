@@ -327,6 +327,7 @@ void Grid::restart() {
   }
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
+  cout << *this;
 }
 
 void Grid::hint() {}
