@@ -2,7 +2,7 @@
 #include <string>
 #include <exception>
 #include "textdisplay.h"
-//#include "graphicsdisplay.h"
+#include "graphicsdisplay.h"
 #include "grid.h"
 #include <exception>
 #include <fstream>
@@ -78,9 +78,9 @@ int main(int argc, char *argv[]) {
   Grid g;
   // NEED to initialize displays first because setlevel updates textdisplay
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
-  //shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
+  shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 500);
   g.setTextDisplay(td);
-  //g.setGraphicsDisplay(gd);
+  g.setGraphicsDisplay(gd);
   if (argc > 1) {
     for(int i = 1; i < argc; i++) {
       if (string(argv[i]) == "-startlevel") {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
       if (cmd.length() == 0) {
         cin >> cmd;
       }
-      try { 
+      try {
         cmd = autoComplete(cmd, commands);
       } catch (InvalidMove &err) {
         cout << err.what() << endl;

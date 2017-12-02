@@ -47,7 +47,7 @@ void Grid::init(int r, int c) {
         for (int j= 0; j < c; j++) {
             Cell cell{i, j, ' '};
             cell.attach(td);
-            //cell.attach(gd);
+            cell.attach(gd);
             row.emplace_back(cell);
         }
         theGrid.emplace_back(row);
@@ -157,7 +157,8 @@ void Grid::checkPiece(Piece piece) {
     int r, c;
     unsetPiece(piece);
     // Checks if potential coords are occupied or not first
-    for (int i = 0; i < piece.getPotentialCoords().size(); i++) {
+    int size = piece.getPotentialCoords().size();
+    for (int i = 0; i < size; i++) {
         r = piece.getPotentialCoords()[i][0];
         c = piece.getPotentialCoords()[i][1];
         if (r < 0 || c < 0 || c >= cols) {
@@ -169,7 +170,8 @@ void Grid::checkPiece(Piece piece) {
 }
 
 void Grid::setPiece(Piece piece) {
-    for (int i = 0; i < piece.getCoords().size(); i++) {
+    int size = piece.getCoords().size();
+    for (int i = 0; i < size; i++) {
         int r = piece.getCoords()[i][0];
         int c = piece.getCoords()[i][1];
         theGrid[r][c].setData(piece.getType());
