@@ -8,7 +8,7 @@ TextDisplay::TextDisplay(int r, int c): r{r}, c{c} {
     for (int i = 0; i < r; i++) { // creates r rows
         vector<char> row;
         for (int j = 0; j < c; j++) { // creates c columns
-            row.emplace_back(' '); 
+            row.emplace_back(' ');
         }
         theDisplay.emplace_back(row);
     }
@@ -28,15 +28,23 @@ void TextDisplay::setNextPiece(vector<vector<char>> nextPiece) {
     this->nextPiece = nextPiece;
 }
 
+void TextDisplay::setScore(int score) {
+  this->score = score;
+}
+
+void TextDisplay::setHighScore(int highScore) {
+  this->highScore = highScore;
+}
+
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << endl;
     out << "Level: " << td.level << endl;
-    out << "Score: " << endl;
-    out << "Hi Score: " << endl;
+    out << "Score: " << td.score << endl;
+    out << "Hi Score: " << td.highScore << endl;
     for (int i = 0; i < td.c; i++) {
         out << "-";
     }
-    out << endl; 
+    out << endl;
     for (int i = 3; i < td.r; i++) { // y coordinate
         for (int j = 0; j < td.c; j++) { // x coordinate
             out << td.theDisplay[i][j];
@@ -46,7 +54,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     for (int i = 0; i < td.c; i++) {
         out << "-";
     }
-    out << endl; 
+    out << endl;
     out << "Next: " << endl;
     for (int i = 0; i < td.nextPiece.size(); i++) {
         for (int j = 0; j < td.nextPiece[i].size(); j++) {

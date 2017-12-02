@@ -36,7 +36,7 @@ bool Grid::checkIsGameOver() {
             throw "GameOver";
         }
     }
-} 
+}
 
 void Grid::init(int r, int c) {
     rows = r;
@@ -219,6 +219,7 @@ void Grid::removeFilledRows() {
         theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
     }
     int offset = rowsToDelete.size();
+    rowsDeleted = rowsToDelete.size();
     int index = 0;
     for (int i = 0; i < rowsToDelete.size(); i++) {
       for (; index < rowsToDelete[i] - rowsToDelete.size() + offset; index++) {
@@ -243,6 +244,21 @@ void Grid::removeFilledRows() {
         theGrid[i][j].notifyObservers();
       }
     }
+    if (rowsToDelete.size() != 0) {
+      updateScore();
+    }
+
+}
+
+void Grid::updateScore() {
+  score += (rowsDeleted + levelCount) * (rowsDeleted + levelCount);
+  if (score > highScore) {
+    highScore = score;
+  }
+  td->setScore(score);
+  td->setHighScore(highScore);
+  //cout << "Score " << score << endl;
+  //cout << "High score " << highScore << endl;
 }
 
 void Grid::printCellCoords() {
