@@ -325,10 +325,10 @@ void Grid::removeFilledRows() {
 
 void Grid::updateScore(std::string type, int level) {
   if (type == "line") {
-    cout << "Lines: " << (rowsDeleted + levelCount) * (rowsDeleted + levelCount) << endl;
+    //cout << "Lines: " << (rowsDeleted + levelCount) * (rowsDeleted + levelCount) << endl;
     score += (rowsDeleted + levelCount) * (rowsDeleted + levelCount);
   } else if (type == "piece") {
-    cout << "Blocks: " << (level + 1) * (level + 1) << endl;
+    //cout << "Blocks: " << (level + 1) * (level + 1) << endl;
     score += (level + 1) * (level + 1);
   }
   if (score > highScore) {

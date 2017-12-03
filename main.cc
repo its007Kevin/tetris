@@ -32,11 +32,9 @@ string autoComplete(string input, vector<string> commands) {
   }
 }
 
-int main(int argc, char *argv[]) {
-  cin.exceptions(ios::eofbit|ios::failbit);
-  string cmd;
-  bool createGraphics = true;
+void applyCommand(string cmd, Grid &g) {
   vector<string> commands;
+  bool multCommands = false;
 
   string left = "left";
   string right = "right";
@@ -79,6 +77,119 @@ int main(int argc, char *argv[]) {
   commands.emplace_back(T);
   commands.emplace_back(res);
   commands.emplace_back(hint);
+  int repeat = 1;
+  int i = 0;
+  while (i < cmd.length() && isdigit(cmd[i])) {
+    i++;
+  }
+  if (i != 0) repeat = stoi(cmd.substr(0, i));
+  cmd = cmd.substr(i, cmd.length());
+  if (cmd.length() == 0) {
+    cin >> cmd;
+  }
+  try {
+    cmd = autoComplete(cmd, commands);
+  } catch (InvalidMove &err) {
+    cout << err.what() << endl;
+    //continue;
+  } catch (MultipleCommands &err) {
+    cout << err.what() << endl;
+    multCommands = true;
+    //continue;
+  }
+  if (cmd == left) {
+    g.left(repeat);
+  }
+  else if (cmd == right) {
+    g.right(repeat);
+  }
+  else if (cmd == down) {
+    g.down(repeat);
+  }
+  else if (cmd == drop) {
+    g.drop(repeat);
+  }
+  else if (cmd == cw) {
+    g.rotateCW(repeat);
+  }
+  else if (cmd == ccw) {
+    g.rotateCCW(repeat);
+  }
+  else if (cmd == res) {
+    g.restart();
+  }
+  else if (cmd == hint) {
+    g.hint();
+  }
+  else if (cmd == norand) {
+    string file;
+    cin >> file;
+    g.noRandom(file);
+  }
+  else if (cmd == rand) {
+    g.random();
+  }
+  else if (cmd == I) {
+    g.replacePieceWith('I');
+  }
+  else if (cmd == J) {
+    g.replacePieceWith('J');
+  }
+  else if (cmd == L) {
+    g.replacePieceWith('L');
+  }
+  else if (cmd == O) {
+    g.replacePieceWith('O');
+  }
+  else if (cmd == S) {
+    g.replacePieceWith('S');
+  }
+  else if (cmd == Z) {
+    g.replacePieceWith('Z');
+  }
+  else if (cmd == T) {
+    g.replacePieceWith('T');
+  } else {
+    for (int j = 0; j < repeat; j++) {
+      if (cmd == lvlup) {
+        try {
+          g.levelUp();
+          cout << g;
+        } catch (exception& err) {
+          cout << err.what() << endl;
+          cout << g;
+        }
+      }
+      else if (cmd == lvldown) {
+        try {
+          g.levelDown();
+          cout << g;
+        } catch (exception& err) {
+          cout << err.what() << endl;
+          cout << g;
+        }
+      }
+      else if (cmd == seq) {
+        string file;
+        cin >> file;
+        // Try not to nest the entire main function again
+      } else {
+        if (!multCommands) {
+          cout << "Invalid input" << endl;
+          break;
+        }
+      }
+    }
+  }
+}
+
+
+int main(int argc, char *argv[]) {
+  cin.exceptions(ios::eofbit|ios::failbit);
+  string cmd;
+  bool createGraphics = true;
+  vector<string> seqCommands;
+
 
   Grid g;
   // NEED to initialize displays first because setlevel updates textdisplay
@@ -117,107 +228,21 @@ int main(int argc, char *argv[]) {
 
   try {
     while (cin >> cmd) {
-      int repeat = 1;
-      int i = 0;
-      while (i < cmd.length() && isdigit(cmd[i])) {
-        i++;
-      }
-      if (i != 0) repeat = stoi(cmd.substr(0, i));
-      cmd = cmd.substr(i, cmd.length());
-      if (cmd.length() == 0) {
-        cin >> cmd;
-      }
-      try {
-        cmd = autoComplete(cmd, commands);
-      } catch (InvalidMove &err) {
-        cout << err.what() << endl;
-        continue;
-      } catch (MultipleCommands &err) {
-        cout << err.what() << endl;
-        continue;
-      }
-      if (cmd == left) {
-        g.left(repeat);
-      }
-      else if (cmd == right) {
-        g.right(repeat);
-      }
-      else if (cmd == down) {
-        g.down(repeat);
-      }
-      else if (cmd == drop) {
-        g.drop(repeat);
-      }
-      else if (cmd == cw) {
-        g.rotateCW(repeat);
-      }
-      else if (cmd == ccw) {
-        g.rotateCCW(repeat);
-      }
-      else if (cmd == res) {
-        g.restart();
-      }
-      else if (cmd == hint) {
-        g.hint();
-      }
-      else if (cmd == norand) {
+      if (cmd == "sequence") {
         string file;
         cin >> file;
-        g.noRandom(file);
-      }
-      else if (cmd == rand) {
-        g.random();
-      } 
-      else if (cmd == I) {
-        g.replacePieceWith('I');
-      }
-      else if (cmd == J) {
-        g.replacePieceWith('J');
-      }
-      else if (cmd == L) {
-        g.replacePieceWith('L');
-      }
-      else if (cmd == O) {
-        g.replacePieceWith('O');
-      }
-      else if (cmd == S) {
-        g.replacePieceWith('S');
-      }
-      else if (cmd == Z) {
-        g.replacePieceWith('Z');
-      }
-      else if (cmd == T) {
-        g.replacePieceWith('T');
-      } else {
-        for (int j = 0; j < repeat; j++) {
-          if (cmd == lvlup) {
-            try {
-              g.levelUp();
-              cout << g;
-            } catch (exception& err) {
-              cout << err.what() << endl;
-              cout << g;
-            }
-          }
-          else if (cmd == lvldown) {
-            try {
-              g.levelDown();
-              cout << g;
-            } catch (exception& err) {
-              cout << err.what() << endl;
-              cout << g;
-            }
-          }
-          else if (cmd == seq) {
-            string file;
-            cin >> file;
-            // Try not to nest the entire main function again
-          } else {
-            cout << "Invalid input" << endl;
-            break;
-          }
+        std::ifstream myFileStream{file};
+        string s;
+        while (myFileStream >> s) {
+          seqCommands.emplace_back(s); //add them to the queue
         }
+        for (int i = 0; i < seqCommands.size(); ++i) {
+          applyCommand(seqCommands.at(i), g);
+        }
+      } else {
+        applyCommand(cmd, g);
       }
+
     }
   } catch (...) {
     cout << "Game Over!" << endl;
