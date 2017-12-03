@@ -27,6 +27,8 @@ class Grid {
   int rowsDeleted;
   int score = 0;
   int highScore = 0;
+  bool notRandom = false;
+  std::string file;
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
   Piece currPiece{'I'};
   Piece nextPiece{'J'};

@@ -54,8 +54,13 @@ void Grid::init(int r, int c) {
         }
         theGrid.emplace_back(row);
     }
-    currPiece = currLevel->generatePiece();
-    nextPiece = currLevel->generatePiece();
+    if (notRandom && (levelCount == 3 || levelCount == 4)) {
+      currPiece = currLevel->generatePiece(file);
+      nextPiece = currLevel->generatePiece(file);
+    } else {
+      currPiece = currLevel->generatePiece();
+      nextPiece = currLevel->generatePiece();
+    }
     setPiece(currPiece);
     td->setNextPiece(nextPiece.render());
 }
@@ -214,7 +219,11 @@ void Grid::unsetPiece(Piece piece) {
 
 void Grid::spawnNextPiece() {
     currPiece = nextPiece;
-    nextPiece = currLevel->generatePiece();
+    if (notRandom && (levelCount == 3 || levelCount == 4)) {
+      nextPiece = currLevel->generatePiece(file);
+    } else {
+      nextPiece = currLevel->generatePiece();
+    }
     td->setNextPiece(nextPiece.render());
     checkIsGameOver();
     if (levelCount == 4) {
@@ -285,8 +294,6 @@ void Grid::updateScore() {
   }
   td->setScore(score);
   td->setHighScore(highScore);
-  //cout << "Score " << score << endl;
-  //cout << "High score " << highScore << endl;
 }
 
 void Grid::notifyAll() {
@@ -333,9 +340,14 @@ void Grid::setLevel(int level) {
   }
 }
 
-void Grid::noRandom(std::string file) {}
+void Grid::noRandom(std::string file) {
+  notRandom = true;
+  this->file = file;
+}
 
-void Grid::random() {}
+void Grid::random() {
+  notRandom = false;
+}
 
 void Grid::replacePieceWith(char type) {
     unsetPiece(currPiece);
