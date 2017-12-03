@@ -11,6 +11,7 @@ class Cell;
 class GraphicsDisplay: public Observer {
   const int gridSize, winSize;
   Xwindow xw;
+  int offset = 20;
   void fillCell(int x, int y, char type);
  public:
   GraphicsDisplay(int gridSize, int winSize);
