@@ -8,7 +8,7 @@ class LevelZero: public Level {
   int pieceCount = 0; //will reset to the beginning of the textfile
   std::vector<char> pieces;
 public:
-  LevelZero();
+  LevelZero(std::string filename);
   Piece generatePiece() override;
 };
 

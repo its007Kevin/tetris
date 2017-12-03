@@ -29,7 +29,8 @@ class Grid {
   int highScore = 0;
   bool notRandom = false;
   std::string file;
-  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
+  std::string scriptFile = "sequence.txt";
+  std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(scriptFile);
   Piece currPiece{'I'};
   Piece nextPiece{'J'};
   bool displayGraphics = true;
@@ -62,13 +63,12 @@ class Grid {
   void levelDown();
   void setLevel(int level);
   void textOnly();
-  void updateScore();
-  
+  void updateScore(); 
   void noRandom(std::string file);
   void random();
   void replacePieceWith(char type);
   void hint();
-  void notifyAll();
+  void changeScriptFile(std::string filename);
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };
 

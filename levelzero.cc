@@ -4,9 +4,9 @@
 #include <fstream>
 #include <memory>
 
-LevelZero::LevelZero() {
+LevelZero::LevelZero(std::string filename) {
   //read in pieces from sequence.txt
-  std::ifstream myFileStream{"sequence.txt"};
+  std::ifstream myFileStream{filename};
   char c;
   while (myFileStream >> c) {
     pieces.emplace_back(c); //add them to the queue

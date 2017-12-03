@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
           istringstream iss{argv[i + 1]};
           string file;
           iss >> file;
-          // Still need to do
+          g.changeScriptFile(file);
       } else if (string(argv[i]) == "-text") {
           createGraphics = false;
           g.textOnly();

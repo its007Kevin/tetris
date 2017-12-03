@@ -16,11 +16,6 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize},
   xw.drawString(20, 40, "Next: ");
   xw.drawString(offset, offset + 6 * winSize / gridSize, "Current Score: ");
   xw.drawString(offset, offset + 12 * winSize / gridSize, "Highscore: ");
-  // for (int i = 0; i < 500; i += 25) {
-  //   for (int j = 0; j < 500; j+= 25) {
-  //   xw.fillRectangle(i, j, 25, 25, Xwindow::Cyan);
-  //   }
-  // }
 }
 
 void GraphicsDisplay::notify(Subject &whoNotified) {

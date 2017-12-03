@@ -63,7 +63,9 @@ void Grid::init(int r, int c) {
     }
     setPiece(currPiece);
     td->setNextPiece(nextPiece.render());
-    gd->setNextPiece(nextPiece.render());
+    if (displayGraphics) {
+        gd->setNextPiece(nextPiece.render());
+    }
 }
 
 // If down results in a collision, spawn the next piece
@@ -205,13 +207,13 @@ void Grid::checkPiece(Piece piece) {
 }
 
 void Grid::setPiece(Piece piece) {
-    int size = piece.getCoords().size();
-    for (int i = 0; i < size; i++) {
-        int r = piece.getCoords()[i][0];
-        int c = piece.getCoords()[i][1];
-        theGrid[r][c].setData(piece.getType());
-        theGrid[r][c].notifyObservers();
-    }
+  int size = piece.getCoords().size();
+  for (int i = 0; i < size; i++) {
+    int r = piece.getCoords()[i][0];
+    int c = piece.getCoords()[i][1];
+    theGrid[r][c].setData(piece.getType());
+    theGrid[r][c].notifyObservers();
+  }
 }
 
 void Grid::unsetPiece(Piece piece) {
@@ -231,7 +233,9 @@ void Grid::spawnNextPiece() {
       nextPiece = currLevel->generatePiece();
     }
     td->setNextPiece(nextPiece.render());
-    gd->setNextPiece(nextPiece.render());
+    if (displayGraphics) {
+        gd->setNextPiece(nextPiece.render());
+    }
     checkIsGameOver();
     if (levelCount == 4) {
       if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
@@ -305,14 +309,6 @@ void Grid::updateScore() {
   td->setHighScore(highScore);
 }
 
-void Grid::notifyAll() {
-    for (int i = 0; i < theGrid.size(); i++) {
-      for (int j = 0; j < theGrid[i].size(); j++) {
-        theGrid[i][j].notifyObservers();
-      }
-    }
-}
-
 void Grid::levelUp() {
   if (levelCount < maxLevel) {
     ++levelCount;
@@ -337,7 +333,7 @@ void Grid::setLevel(int level) {
   levelCount = level;
   td->setLevel(level);
   if (levelCount == 0) {
-    currLevel = std::make_shared<LevelZero>();
+    currLevel = std::make_shared<LevelZero>(scriptFile);
   } else if (levelCount == 1) {
     currLevel = std::make_shared<LevelOne>();
   } else if (levelCount == 2) {
@@ -381,11 +377,18 @@ void Grid::restart() {
   td->setScore(score);
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
-  gd->setNextPiece(nextPiece.render());
+  if (displayGraphics) {
+    gd->setNextPiece(nextPiece.render());
+  }
   cout << *this;
 }
 
 void Grid::hint() {}
+
+void Grid::changeScriptFile(string filename) {
+    scriptFile = filename;
+    currLevel = make_shared<LevelZero>(scriptFile);
+}
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {
     out << *(g.td);
