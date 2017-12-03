@@ -11,6 +11,7 @@ protected:
   std::vector<char> seqPieces;
   char pieces[9] = {'S','S','Z','Z','I','O','T','L','J'};
 public:
+	LevelFour(int seed = 1);
   Piece generatePiece() override;
   Piece generatePiece(std::string file) override;
   Piece generateCenterPiece() override;

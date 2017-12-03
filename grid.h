@@ -69,6 +69,7 @@ class Grid {
   void replacePieceWith(char type);
   void hint();
   void changeScriptFile(std::string filename);
+  void setSeed(int seed);
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };
 
