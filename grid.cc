@@ -26,6 +26,8 @@ void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
 
 void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
     this->gd = gd;
+    gd->setScore(123456789);
+    gd->setHighScore(123456789);
 }
 
 bool Grid::checkIsGameOver() {
@@ -307,6 +309,8 @@ void Grid::updateScore() {
   }
   td->setScore(score);
   td->setHighScore(highScore);
+  gd->setScore(score);
+  gd->setHighScore(highScore);
 }
 
 void Grid::levelUp() {
@@ -375,6 +379,7 @@ void Grid::restart() {
   }
   score = 0;
   td->setScore(score);
+  gd->setScore(score);
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
   if (displayGraphics) {

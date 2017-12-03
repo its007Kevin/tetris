@@ -99,8 +99,10 @@ void GraphicsDisplay::setNextPiece(std::vector<std::vector<char>> nextPiece) {
   }
 }
 void GraphicsDisplay::setScore(int score) {
-  xw.drawString(offset, offset + 20 + 4 * winSize / gridSize, "Current Score: ");
+  xw.fillRectangle(offset, offset + 4 + 5 * winSize / gridSize, 100, 16, Xwindow::White);
+  xw.drawString(offset, offset + 20 + 5 * winSize / gridSize, to_string(score));
 }
 void GraphicsDisplay::setHighScore(int highScore) {
-  xw.drawString(offset, offset + 20 + 8 * winSize / gridSize, "Highscore: ");
+  xw.fillRectangle(offset, offset + 4 + 10 * winSize / gridSize, 100, 16, Xwindow::White);
+  xw.drawString(offset, offset + 20 + 10 * winSize / gridSize, to_string(highScore));
 }
