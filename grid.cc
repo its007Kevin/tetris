@@ -63,7 +63,7 @@ void Grid::init(int r, int c) {
     }
     setPiece(currPiece);
     td->setNextPiece(nextPiece.render());
-    //gd->setNextPiece(nextPiece.render())
+    gd->setNextPiece(nextPiece.render());
 }
 
 // If down results in a collision, spawn the next piece
@@ -227,7 +227,7 @@ void Grid::spawnNextPiece() {
       nextPiece = currLevel->generatePiece();
     }
     td->setNextPiece(nextPiece.render());
-    //gd->setNextPiece(nextPiece.render())
+    gd->setNextPiece(nextPiece.render());
     checkIsGameOver();
     if (levelCount == 4) {
       if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
@@ -376,7 +376,7 @@ void Grid::restart() {
   score = 0;
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
-  //gd->setNextPiece(nextPiece.render())
+  gd->setNextPiece(nextPiece.render());
   cout << *this;
 }
 

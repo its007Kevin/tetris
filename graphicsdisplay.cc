@@ -10,12 +10,12 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize},
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
   xw.fillRectangle(7 * (winSize/gridSize) - 1, 0, 1, winSize, Xwindow::Black);
   //xw.fillRectangle(0, 0, winSize / gridSize * 7, winSize, Xwindow::Black);
-  xw.drawString(20 , 20, "Quadris");
+  xw.drawString(20 , 20, "QUADRIS");
   xw.drawString(20 , winSize - 40, "Created by:");
   xw.drawString(20 , winSize - 20, "Eric Wang, Bob Zhang, Kevin Zeng");
-  //xw.drawBigString(offset, offset, "NEXT PIECE");
-  //xw.drawBigString(offset, offset + 6 * winSize / gridSize, "CURRENT SCORE");
-  //xw.drawBigString(offset, offset + 12 * winSize / gridSize, "HIGHSCORE");
+  xw.drawString(20, 40, "Next: ");
+  xw.drawString(offset, offset + 6 * winSize / gridSize, "Current Score: ");
+  xw.drawString(offset, offset + 12 * winSize / gridSize, "Highscore: ");
   // for (int i = 0; i < 500; i += 25) {
   //   for (int j = 0; j < 500; j+= 25) {
   //   xw.fillRectangle(i, j, 25, 25, Xwindow::Cyan);
