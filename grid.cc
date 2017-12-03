@@ -82,7 +82,9 @@ void Grid::down(int times) {
             currPiece.revert();
             removeFilledRows();
             spawnNextPiece();
-            ++blocksWithoutClear;
+            if (levelCount == 4) {
+              ++blocksWithoutClear;
+            }
             break;
         }
     }
@@ -145,7 +147,9 @@ void Grid::drop(int times) {
           currPiece.revert();
           removeFilledRows();
           spawnNextPiece();
-          ++blocksWithoutClear;
+          if (levelCount == 4) {
+            ++blocksWithoutClear;
+          }
           break;
         }
       }
@@ -374,6 +378,7 @@ void Grid::restart() {
     }
   }
   score = 0;
+  td->setScore(score);
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
   gd->setNextPiece(nextPiece.render());
