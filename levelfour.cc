@@ -23,6 +23,7 @@ Piece LevelFour::generatePiece(std::string file) {
   }
   Piece generatedPiece{Piece{seqPieces.at(pieceCount)}};
   ++pieceCount; //increment to get next block
+  generatedPiece.makeHeavy();
   return generatedPiece;
 }
 

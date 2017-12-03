@@ -8,7 +8,7 @@ using namespace std;
 GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize}, winSize{winSize}, xw{winSize, winSize} {
   int offset = 25;
   xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
-  xw.fillRectangle(7 * (winSize/gridSize) - 1, 0, 5, winSize);
+  xw.fillRectangle(7 * (winSize/gridSize) - 1, 0, 1, winSize);
   xw.drawString(20 , 20, "Quadris");
   xw.drawString(20 , winSize - 40, "Created by:");
   xw.drawString(20 , winSize - 20, "Eric Wang, Bob Zhang, Kevin Zeng");
