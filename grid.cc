@@ -58,6 +58,7 @@ void Grid::init(int r, int c) {
     nextPiece = currLevel->generatePiece();
     setPiece(currPiece);
     td->setNextPiece(nextPiece.render());
+    //gd->setNextPiece(nextPiece.render())
 }
 
 // If down results in a collision, spawn the next piece
@@ -127,27 +128,28 @@ void Grid::rotateCCW(int times) {
 }
 
 void Grid::drop(int times) {
-    for (int i = 0; i < times; i++) {
-        unsetPiece(currPiece);
-        while (true) {
-            currPiece.down();
-            try {
-                checkPiece(currPiece);
-                currPiece.set();
-            } catch (Collision) {
-                setPiece(currPiece);
-                currPiece.revert();
-                removeFilledRows();
-                spawnNextPiece();
-                ++blocksWithoutClear;
-                break;
-            }
+  for (int i = 0; i < times; i++) {
+    unsetPiece(currPiece);
+      while (true) {
+        currPiece.down();
+        try {
+          checkPiece(currPiece);
+          currPiece.set();
+        } catch (Collision) {
+          setPiece(currPiece);
+          currPiece.revert();
+          removeFilledRows();
+          spawnNextPiece();
+          ++blocksWithoutClear;
+          break;
         }
-    }
-    cout << *this;
+      }
+  }
+  cout << *this;
 }
 
 void Grid::dropCenter(Piece &centerPiece) {
+  unsetPiece(centerPiece);
   while (true) {
       centerPiece.down();
       try {
@@ -216,6 +218,7 @@ void Grid::spawnNextPiece() {
     currPiece = nextPiece;
     nextPiece = currLevel->generatePiece();
     td->setNextPiece(nextPiece.render());
+    //gd->setNextPiece(nextPiece.render())
     checkIsGameOver();
     if (levelCount == 4) {
       if (blocksWithoutClear % 5 == 0 && blocksWithoutClear != 0) {
@@ -262,7 +265,9 @@ void Grid::removeFilledRows() {
       for (int j = 0; j < cols; j++) {
           Cell cell{i, j, ' '};
           cell.attach(td);
-          cell.attach(gd);
+          if (displayGraphics) {
+            cell.attach(gd);
+          }
           row.emplace_back(cell);
       }
       theGrid.emplace(theGrid.begin(), row);
@@ -285,8 +290,6 @@ void Grid::updateScore() {
   }
   td->setScore(score);
   td->setHighScore(highScore);
-  //cout << "Score " << score << endl;
-  //cout << "High score " << highScore << endl;
 }
 
 void Grid::notifyAll() {
@@ -353,10 +356,13 @@ void Grid::restart() {
   for (int i = 0; i < theGrid.size(); i++) {
     for (int j = 0; j < theGrid[i].size(); j++) {
         theGrid[i][j].setData(' ');
+        theGrid[i][j].notifyObservers();
     }
   }
+  score = 0;
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
+  //gd->setNextPiece(nextPiece.render())
   cout << *this;
 }
 

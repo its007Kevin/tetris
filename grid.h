@@ -61,7 +61,7 @@ class Grid {
   void setLevel(int level);
   void textOnly();
   void updateScore();
-  // Not implemented yet
+  
   void noRandom(std::string file);
   void random();
   void replacePieceWith(char type);
