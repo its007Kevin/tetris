@@ -26,8 +26,8 @@ void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
 
 void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
     this->gd = gd;
-    gd->setScore(123456789);
-    gd->setHighScore(123456789);
+    gd->setScore(0);
+    gd->setHighScore(0);
 }
 
 bool Grid::checkIsGameOver() {
