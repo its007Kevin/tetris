@@ -5,11 +5,14 @@
 
 class LevelThree: public Level {
 protected:
+  int pieceCount = 0; //will reset to the beginning of the textfile
   bool isHeavy = true;
   int brownBlock = false;
+  std::vector<char> seqPieces;
   char pieces[9] = {'S','S','Z','Z','I','O','T','L','J'};
 public:
   Piece generatePiece() override;
+  Piece generatePiece(std::string file) override;
 };
 
 #endif
