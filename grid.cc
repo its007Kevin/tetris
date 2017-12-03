@@ -47,7 +47,9 @@ void Grid::init(int r, int c) {
         for (int j= 0; j < c; j++) {
             Cell cell{i, j, ' '};
             cell.attach(td);
-            cell.attach(gd);
+            if (displayGraphics) {
+               cell.attach(gd);
+            }
             row.emplace_back(cell);
         }
         theGrid.emplace_back(row);
@@ -59,52 +61,16 @@ void Grid::init(int r, int c) {
 }
 
 // If down results in a collision, spawn the next piece
-void Grid::down() {
-    currPiece.down();
-    try {
-        checkPiece(currPiece);
-        currPiece.set();
-        setPiece(currPiece);
-    } catch (out_of_range) {
-        setPiece(currPiece);
-        currPiece.revert();
-    } catch (Collision) {
-        setPiece(currPiece);
-        currPiece.revert();
-        removeFilledRows();
-        spawnNextPiece();
-        ++blocksWithoutClear;
-    }
-    cout << *this;
-}
-
-void Grid::left() {
-    currPiece.left();
-    tryPlace();
-}
-
-void Grid::right() {
-    currPiece.right();
-    tryPlace();
-}
-
-void Grid::rotateCW() {
-    currPiece.rotateCW();
-    tryPlace();
-}
-
-void Grid::rotateCCW() {
-    currPiece.rotateCCW();
-    tryPlace();
-}
-
-void Grid::drop() {
-    while (true) {
+void Grid::down(int times) {
+    unsetPiece(currPiece);
+    for (int i = 0; i < times; i++) {
         currPiece.down();
         try {
             checkPiece(currPiece);
             currPiece.set();
-            setPiece(currPiece);
+        } catch (out_of_range) {
+            currPiece.revert();
+            break;
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
@@ -112,6 +78,70 @@ void Grid::drop() {
             spawnNextPiece();
             ++blocksWithoutClear;
             break;
+        }
+    }
+    setPiece(currPiece);
+    cout << *this;
+}
+
+void Grid::left(int times) {
+    unsetPiece(currPiece);
+    for (int i = 0; i < times; i++) {
+        currPiece.left();
+        tryPlace();
+    }
+    setPiece(currPiece);
+    cout << *this;
+}
+
+void Grid::right(int times) {
+    unsetPiece(currPiece);
+    for (int i = 0; i < times; i++) {
+        currPiece.right();
+        tryPlace();
+    }
+    setPiece(currPiece);
+    cout << *this;
+}
+
+void Grid::rotateCW(int times) {
+    times %= 4;
+    unsetPiece(currPiece);
+    for (int i = 0; i < times; i++) {
+        currPiece.rotateCW();
+        tryPlace();
+    }
+    setPiece(currPiece);
+    cout << *this;
+}
+
+void Grid::rotateCCW(int times) {
+    times %= 4;
+    unsetPiece(currPiece);
+    for (int i = 0; i < times; i++) {
+        currPiece.rotateCCW();
+        tryPlace();
+    }
+    setPiece(currPiece);
+    cout << *this;
+}
+
+void Grid::drop(int times) {
+    for (int i = 0; i < times; i++) {
+        unsetPiece(currPiece);
+        while (true) {
+            currPiece.down();
+            try {
+                checkPiece(currPiece);
+                currPiece.set();
+            } catch (Collision) {
+                setPiece(currPiece);
+                currPiece.revert();
+                removeFilledRows();
+                spawnNextPiece();
+                ++blocksWithoutClear;
+                break;
+            }
         }
     }
     cout << *this;
@@ -123,14 +153,13 @@ void Grid::dropCenter(Piece &centerPiece) {
       try {
         checkPiece(centerPiece);
         centerPiece.set();
-        setPiece(centerPiece);
       } catch (Collision) {
-        setPiece(centerPiece);
         centerPiece.revert();
         removeFilledRows();
         break;
       }
   }
+  setPiece(centerPiece);
   cout << *this;
 }
 
@@ -139,23 +168,18 @@ void Grid::tryPlace() {
     try {
         checkPiece(currPiece);
         currPiece.set();
-        setPiece(currPiece);
         if (currPiece.checkHeavy()) {
-          down();
+          down(1);
         }
     } catch (out_of_range) {
-        setPiece(currPiece);
         currPiece.revert();
     } catch (Collision) {
-        setPiece(currPiece);
         currPiece.revert();
     }
-    cout << *this;
 }
 
 void Grid::checkPiece(Piece piece) {
     int r, c;
-    unsetPiece(piece);
     // Checks if potential coords are occupied or not first
     int size = piece.getPotentialCoords().size();
     for (int i = 0; i < size; i++) {
@@ -175,6 +199,7 @@ void Grid::setPiece(Piece piece) {
         int r = piece.getCoords()[i][0];
         int c = piece.getCoords()[i][1];
         theGrid[r][c].setData(piece.getType());
+        theGrid[r][c].notifyObservers();
     }
 }
 
@@ -183,6 +208,7 @@ void Grid::unsetPiece(Piece piece) {
     int r = piece.getCoords()[i][0];
     int c = piece.getCoords()[i][1];
     theGrid[r][c].setData(' ');
+    theGrid[r][c].notifyObservers();
   }
 }
 
@@ -236,6 +262,7 @@ void Grid::removeFilledRows() {
       for (int j = 0; j < cols; j++) {
           Cell cell{i, j, ' '};
           cell.attach(td);
+          cell.attach(gd);
           row.emplace_back(cell);
       }
       theGrid.emplace(theGrid.begin(), row);
@@ -249,7 +276,6 @@ void Grid::removeFilledRows() {
     if (rowsToDelete.size() != 0) {
       updateScore();
     }
-
 }
 
 void Grid::updateScore() {
@@ -263,13 +289,11 @@ void Grid::updateScore() {
   //cout << "High score " << highScore << endl;
 }
 
-void Grid::printCellCoords() {
+void Grid::notifyAll() {
     for (int i = 0; i < theGrid.size(); i++) {
-      cout << "[";
       for (int j = 0; j < theGrid[i].size(); j++) {
-        cout << "(" << theGrid[i][j].getInfo().row << "," << theGrid[i][j].getInfo().col << ") ";
+        theGrid[i][j].notifyObservers();
       }
-      cout << "]" << endl;
     }
 }
 
@@ -319,6 +343,10 @@ void Grid::replacePieceWith(char type) {
     currPiece = piece;
     setPiece(currPiece);
     cout << *this;
+}
+
+void Grid::textOnly() {
+    displayGraphics = false;
 }
 
 void Grid::restart() {

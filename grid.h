@@ -30,6 +30,7 @@ class Grid {
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>();
   Piece currPiece{'I'};
   Piece nextPiece{'J'};
+  bool displayGraphics = true;
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
@@ -38,12 +39,12 @@ class Grid {
   void init(int r, int c);
 
   // Piece Movement specific commands
-  void down();
-  void left();
-  void right();
-  void rotateCW();
-  void rotateCCW();
-  void drop();
+  void down(int times);
+  void left(int times);
+  void right(int times);
+  void rotateCW(int times);
+  void rotateCCW(int times);
+  void drop(int times);
   void dropCenter(Piece&);
 
   // Piece interactions with board
@@ -58,17 +59,15 @@ class Grid {
   void levelUp();
   void levelDown();
   void setLevel(int level);
+  void textOnly();
   void updateScore();
   // Not implemented yet
   void noRandom(std::string file);
   void random();
   void replacePieceWith(char type);
   void hint();
-
+  void notifyAll();
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
-
-  // Debugging
-  void printCellCoords();
 };
 
 #endif

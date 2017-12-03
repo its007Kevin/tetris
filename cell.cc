@@ -17,7 +17,7 @@ Info Cell::getInfo() const {
 
 void Cell::setData(char d) {
   data = d;
-  notifyObservers();
+  //notifyObservers();
 }
 
 void Cell::shiftRows(int n) { r += n; }
