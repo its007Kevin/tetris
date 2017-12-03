@@ -100,6 +100,11 @@ int main(int argc, char *argv[]) {
       } else if (string(argv[i]) == "-text") {
           createGraphics = false;
           g.textOnly();
+      } else if (string(argv[i]) == "-seed") {
+          istringstream iss{argv[i + 1]};
+          int seed;
+          iss >> seed;
+          g.setSeed(seed);
       }
     }
   }
@@ -148,6 +153,41 @@ int main(int argc, char *argv[]) {
       }
       else if (cmd == ccw) {
         g.rotateCCW(repeat);
+      }
+      else if (cmd == res) {
+        g.restart();
+      }
+      else if (cmd == hint) {
+        g.hint();
+      }
+      else if (cmd == norand) {
+        string file;
+        cin >> file;
+        g.noRandom(file);
+      }
+      else if (cmd == rand) {
+        g.random();
+      } 
+      else if (cmd == I) {
+        g.replacePieceWith('I');
+      }
+      else if (cmd == J) {
+        g.replacePieceWith('J');
+      }
+      else if (cmd == L) {
+        g.replacePieceWith('L');
+      }
+      else if (cmd == O) {
+        g.replacePieceWith('O');
+      }
+      else if (cmd == S) {
+        g.replacePieceWith('S');
+      }
+      else if (cmd == Z) {
+        g.replacePieceWith('Z');
+      }
+      else if (cmd == T) {
+        g.replacePieceWith('T');
       } else {
         for (int j = 0; j < repeat; j++) {
           if (cmd == lvlup) {
@@ -167,41 +207,6 @@ int main(int argc, char *argv[]) {
               cout << err.what() << endl;
               cout << g;
             }
-          }
-          else if (cmd == norand) {
-            string file;
-            cin >> file;
-            g.noRandom(file);
-          }
-          else if (cmd == rand) {
-            g.random();
-          }
-          else if (cmd == I) {
-            g.replacePieceWith('I');
-          }
-          else if (cmd == J) {
-            g.replacePieceWith('J');
-          }
-          else if (cmd == L) {
-            g.replacePieceWith('L');
-          }
-          else if (cmd == O) {
-            g.replacePieceWith('O');
-          }
-          else if (cmd == S) {
-            g.replacePieceWith('S');
-          }
-          else if (cmd == Z) {
-            g.replacePieceWith('Z');
-          }
-          else if (cmd == T) {
-            g.replacePieceWith('T');
-          }
-          else if (cmd == res) {
-            g.restart();
-          }
-          else if (cmd == hint) {
-            g.hint();
           }
           else if (cmd == seq) {
             string file;

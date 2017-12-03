@@ -361,6 +361,9 @@ void Grid::random() {
 void Grid::replacePieceWith(char type) {
     unsetPiece(currPiece);
     Piece piece{type};
+    if (levelCount == 3 || levelCount == 4) {
+        piece.makeHeavy();
+    }
     currPiece = piece;
     setPiece(currPiece);
     cout << *this;
@@ -393,6 +396,18 @@ void Grid::hint() {}
 void Grid::changeScriptFile(string filename) {
     scriptFile = filename;
     currLevel = make_shared<LevelZero>(scriptFile);
+}
+
+void Grid::setSeed(int seed) {
+    if (levelCount == 1) {
+        currLevel = std::make_shared<LevelOne>(seed);
+    } else if (levelCount == 2) {
+        currLevel = std::make_shared<LevelTwo>(seed);
+    } else if (levelCount == 3) {
+        currLevel = std::make_shared<LevelThree>(seed);
+    } else if (levelCount == 4) {
+        currLevel = std::make_shared<LevelFour>(seed);
+    }
 }
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {

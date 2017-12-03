@@ -4,6 +4,10 @@
 #include <memory>
 #include <fstream>
 
+LevelThree::LevelThree(int seed) {
+  srand(seed);
+}
+
 Piece LevelThree::generatePiece() {
   int randomIndex = rand() % 9;
   Piece generatedPiece{Piece{pieces[randomIndex]}};

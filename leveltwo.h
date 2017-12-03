@@ -9,6 +9,7 @@ protected:
   int brownBlock = false;
   char pieces[7] = {'S','Z','I','O','T','L','J'};
 public:
+	LevelTwo(int seed = 1);
   Piece generatePiece() override;
 };
 
