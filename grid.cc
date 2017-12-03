@@ -84,6 +84,7 @@ void Grid::down(int times) {
         } catch (Collision) {
             setPiece(currPiece);
             currPiece.revert();
+            pieces.emplace_back(currPiece);
             removeFilledRows();
             spawnNextPiece();
             if (levelCount == 4) {
@@ -149,6 +150,7 @@ void Grid::drop(int times) {
         } catch (Collision) {
           setPiece(currPiece);
           currPiece.revert();
+          pieces.emplace_back(currPiece);
           removeFilledRows();
           spawnNextPiece();
           if (levelCount == 4) {
@@ -251,6 +253,7 @@ void Grid::spawnNextPiece() {
 
 void Grid::removeFilledRows() {
     bool isFilled;
+    bool deletePiece = true;
     vector<int> rowsToDelete;
     // Find the indexes of the rows to delete.
     for (int i = 0; i < theGrid.size(); i++) {
@@ -266,7 +269,10 @@ void Grid::removeFilledRows() {
         }
     }
     for (int i = 0; i < rowsToDelete.size(); i++) {
-        theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
+      for (int j = 0; j < pieces.size(); ++j) {
+        pieces.at(j).incRows(rowsToDelete.size()); //increment row of pieces by number of rows cleared
+      }
+      theGrid.erase(theGrid.begin() + rowsToDelete.at(i) - i);
     }
     int offset = rowsToDelete.size();
     rowsDeleted = rowsToDelete.size();
@@ -297,20 +303,39 @@ void Grid::removeFilledRows() {
         theGrid[i][j].notifyObservers();
       }
     }
+    //cleared a line, update score
     if (rowsToDelete.size() != 0) {
-      updateScore();
+      updateScore("line", levelCount);
+    }
+
+    //go through piece by piece, checking if any pieces should be deleted
+    for (int j = pieces.size() - 1; j >=  0; --j) {
+      for (int i = 0; i < pieces[j].getCoords().size(); ++i) {
+        if (pieces.at(j).getCoords()[i][0] <= 17) { // check if each coordinate of the piece has been cleared
+          deletePiece = false; //not all coordinates cleared, don't delete piece
+        }
+      }
+      if (deletePiece) { //all coordinates have been cleared, delete the piece
+        updateScore("piece", pieces.at(j).getLevel());
+        pieces.erase(pieces.begin() + j);
+      }
+      deletePiece = true;
     }
 }
 
-void Grid::updateScore() {
-  score += (rowsDeleted + levelCount) * (rowsDeleted + levelCount);
+void Grid::updateScore(std::string type, int level) {
+  if (type == "line") {
+    cout << "Lines: " << (rowsDeleted + levelCount) * (rowsDeleted + levelCount) << endl;
+    score += (rowsDeleted + levelCount) * (rowsDeleted + levelCount);
+  } else if (type == "piece") {
+    cout << "Blocks: " << (level + 1) * (level + 1) << endl;
+    score += (level + 1) * (level + 1);
+  }
   if (score > highScore) {
     highScore = score;
   }
   td->setScore(score);
   td->setHighScore(highScore);
-  gd->setScore(score);
-  gd->setHighScore(highScore);
 }
 
 void Grid::levelUp() {
@@ -360,7 +385,7 @@ void Grid::random() {
 
 void Grid::replacePieceWith(char type) {
     unsetPiece(currPiece);
-    Piece piece{type};
+    Piece piece{type, levelCount};
     if (levelCount == 3 || levelCount == 4) {
         piece.makeHeavy();
     }

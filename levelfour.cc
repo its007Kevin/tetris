@@ -5,12 +5,12 @@
 #include <fstream>
 
 LevelFour::LevelFour(int seed) {
-  
+
 }
 
 Piece LevelFour::generatePiece() {
   int randomIndex = rand() % 9;
-  Piece generatedPiece{Piece{pieces[randomIndex]}};
+  Piece generatedPiece{Piece{pieces[randomIndex], 4}};
   generatedPiece.makeHeavy();
   return generatedPiece;
 }
@@ -25,13 +25,13 @@ Piece LevelFour::generatePiece(std::string file) {
   if (pieceCount > seqPieces.size() - 1) { //reset to the beginning of the queue
     pieceCount = 0;
   }
-  Piece generatedPiece{Piece{seqPieces.at(pieceCount)}};
+  Piece generatedPiece{Piece{seqPieces.at(pieceCount), 4}};
   ++pieceCount; //increment to get next block
   generatedPiece.makeHeavy();
   return generatedPiece;
 }
 
 Piece LevelFour::generateCenterPiece() {
-  Piece centerPiece{Piece{'*'}};
+  Piece centerPiece{Piece{'*', 4}};
   return centerPiece;
 }

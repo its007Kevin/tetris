@@ -9,6 +9,6 @@ LevelOne::LevelOne(int seed) {
 
 Piece LevelOne::generatePiece() {
   int randomIndex = rand() % 12;
-  Piece generatedPiece{Piece{pieces[randomIndex]}};
+  Piece generatedPiece{Piece{pieces[randomIndex], 1}};
   return generatedPiece;
 }

@@ -9,6 +9,6 @@ LevelTwo::LevelTwo(int seed) {
 
 Piece LevelTwo::generatePiece() {
   int randomIndex = rand() % 7;
-  Piece generatedPiece{Piece{pieces[randomIndex]}};
+  Piece generatedPiece{Piece{pieces[randomIndex], 2}};
   return generatedPiece;
 }

@@ -17,7 +17,7 @@ Piece LevelZero::generatePiece() {
   if (pieceCount > pieces.size() - 1) { //reset to the beginning of the queue
     pieceCount = 0;
   }
-  Piece generatedPiece{Piece{pieces.at(pieceCount)}};
+  Piece generatedPiece{Piece{pieces.at(pieceCount), 0}};
   ++pieceCount; //increment to get next block
   return generatedPiece;
 }

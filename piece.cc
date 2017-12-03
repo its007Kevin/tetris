@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Piece::Piece(char type): type{type} {
+Piece::Piece(char type, int level): type{type}, levelGenerated{level} {
   if (type == 'I') {
     coords = {{3, 0}, {3, 1}, {3, 2}, {3, 3}};
   }
@@ -43,6 +43,10 @@ void Piece::removeHeavy() {
 
 bool Piece::checkHeavy() {
   return isHeavy;
+}
+
+int Piece::getLevel() {
+  return levelGenerated;
 }
 
 void Piece::left() {
@@ -131,6 +135,12 @@ vector<vector<int>> Piece::getPotentialCoords() {
 
 char Piece::getType() {
   return type;
+}
+
+void Piece::incRows(int num) {
+  for (int i = 0; i < coords.size(); i++) {
+    coords[i][0]++;
+  }
 }
 
 vector<vector<char>> Piece::render() {

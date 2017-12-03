@@ -10,12 +10,15 @@ class Piece {
   std::vector<std::vector<int>> potentialCoords;
   char type;
   bool isHeavy = false;
+  int levelGenerated = 0;
 
  public:
-  Piece(char type);
+  Piece(char type, int level);
   void makeHeavy();
   void removeHeavy();
   bool checkHeavy();
+  int getLevel();
+  void incRows(int num);
 
   // Piece movement
   void left();
