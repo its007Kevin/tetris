@@ -11,10 +11,14 @@ class Cell;
 class GraphicsDisplay: public Observer {
   const int gridSize, winSize;
   Xwindow xw;
-
+  void fillCell(int x, int y, char type);
  public:
   GraphicsDisplay(int gridSize, int winSize);
 
   void notify(Subject &whoNotified) override;
+  void setLevel(int level);
+  void setNextPiece(std::vector<std::vector<char>> nextPiece);
+  void setScore(int score);
+  void setHighScore(int highScore);
 };
 #endif
