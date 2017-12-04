@@ -28,7 +28,6 @@ void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
 void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
     if (displayGraphics) {
         this->gd = gd;
-        gd->setLevel(levelCount);
         gd->setScore(score);
         gd->setHighScore(highScore);
     }
@@ -484,7 +483,6 @@ void Grid::hold() {
 
 void Grid::enhancementsOn() {
     runEnhancements = true;
-    td->enhancementsOn();
 }
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {

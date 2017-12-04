@@ -40,7 +40,6 @@ class Grid {
   std::vector<Piece> pieces;
   bool runEnhancements = false;
 
-
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
   void setGraphicsDisplay(std::shared_ptr<GraphicsDisplay> gd);

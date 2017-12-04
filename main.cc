@@ -196,6 +196,7 @@ int main(int argc, char *argv[]) {
   string cmd;
   bool createGraphics = true;
   bool enableBonus = false;
+  int startLevel = 0;
   vector<string> seqCommands;
   vector<string *> commands;
 
@@ -246,16 +247,11 @@ int main(int argc, char *argv[]) {
   commands.emplace_back(&hold);
 
   Grid g;
-  // NEED to initialize displays first because setlevel updates textdisplay
-  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
-  g.setTextDisplay(td);
   if (argc > 1) {
     for(int i = 1; i < argc; i++) {
       if (string(argv[i]) == "-startlevel") {
           istringstream iss{argv[i + 1]};
-          int level;
-          iss >> level;
-          g.setLevel(level);
+          iss >> startLevel;
           i++;
       } else if (string(argv[i]) == "-scriptfile") {
           istringstream iss{argv[i + 1]};
@@ -276,8 +272,15 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+  shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
+  td->setLevel(startLevel);
+  if (enableBonus) {
+    td->enhancementsOn();
+  }
+  g.setTextDisplay(td);
   if (createGraphics) {
     shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 630);
+    gd->setLevel(startLevel);
     g.setGraphicsDisplay(gd);
     if (enableBonus) {
       gd->enableHold();
