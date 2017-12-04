@@ -197,7 +197,6 @@ int main(int argc, char *argv[]) {
   bool createGraphics = true;
   bool enableBonus = false;
   int startLevel = 0;
-  vector<string> seqCommands;
   vector<string *> commands;
 
   string left = "left";
@@ -302,6 +301,7 @@ int main(int argc, char *argv[]) {
         //continue;
       }
       if (cmd == "sequence") {
+        vector<string> seqCommands;
         string file;
         cin >> file;
         std::ifstream myFileStream{file};
