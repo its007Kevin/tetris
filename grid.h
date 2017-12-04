@@ -55,17 +55,10 @@ class Grid {
   void drop(int times);
   void dropCenter(Piece&);
 
-  // Piece interactions with board
-  void tryPlace();
-  void checkPiece(Piece piece);
-  void setPiece(Piece piece);
-  void unsetPiece(Piece piece);
-  void spawnNextPiece();
-  void removeFilledRows();
   void restart();
-
   void levelUp();
   void levelDown();
+
   void setLevel(int level);
   void textOnly();
   void updateScore(std::string type, int level);
@@ -78,6 +71,15 @@ class Grid {
   void hold();
   void enhancementsOn();
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
+
+private:
+  void tryPlace();
+  void checkPiece(Piece piece);
+  void setPiece(Piece piece);
+  void unsetPiece(Piece piece);
+  void spawnNextPiece();
+  void removeFilledRows();
+
 };
 
 #endif
