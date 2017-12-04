@@ -6,7 +6,20 @@
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize}, winSize{winSize}, xw{winSize, winSize} {
-  xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
+  //xw.fillRectangleRGB(0, 0, winSize, winSize, 250000, 250000, 250000);
+  //xw.fillRectangle(0, 0, winSize, winSize, Xwindow::White);
+  //grid lines
+  int x = 8 * (winSize / gridSize) - offset;
+  while (x < winSize - offset) {
+    xw.fillRectangleRGB(x, offset - 4, 1, winSize - 3 * winSize / gridSize + 9, 250000, 250000, 250000);
+    x += winSize / gridSize;
+  }
+  int y = offset + winSize / gridSize;
+  while (y < winSize - 3 * winSize / gridSize + offset + 1) {
+    xw.fillRectangleRGB(7 * (winSize/gridSize) - 4 - offset, y, winSize - 7 * (winSize / gridSize) + 5, 1, 250000, 250000, 250000);
+    y += winSize / gridSize;
+  }
+
   //border
   //left
   xw.fillRectangle(7 * (winSize/gridSize) - 4 - offset, offset - 4,
@@ -31,11 +44,15 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize},
   xw.drawString(offset, 40, "Next: ");
   xw.drawString(offset, offset + 5 * winSize / gridSize, "Current Score: ");
   xw.drawString(offset, offset + 10 * winSize / gridSize, "Highscore: ");
-  // for (int i = 0; i < 500; i += 25) {
-  //   for (int j = 0; j < 500; j+= 25) {
-  //   xw.fillRectangle(i, j, 25, 25, Xwindow::Cyan);
-  //   }
-  // }
+
+   /*int i = 14;
+   for (int i = 0; i < 500; i += 25) {
+     for (int j = 0; j < 500; j+= 25) {
+     xw.fillRectangle(i, j, 25, 25, i);
+     cout << i << endl;
+     i++;
+     }
+   }*/
 }
 
 void GraphicsDisplay::notify(Subject &whoNotified) {
@@ -82,10 +99,10 @@ void GraphicsDisplay::fillCell(int x, int y, char type) {
   }
   xw.fillRectangle(x, y, cellSize, cellSize, colour);
   if (type == ' ') return;
-  xw.fillRectangle(x, y, cellSize, 1, Xwindow::White);
-  xw.fillRectangle(x, y, 1, cellSize, Xwindow::White);
-  xw.fillRectangle(x + cellSize, y, 1, cellSize, Xwindow::White);
-  xw.fillRectangle(x, y + cellSize, cellSize, 1, Xwindow::White);
+  xw.fillRectangleRGB(x, y, cellSize, 1, 250000, 250000, 250000);
+  xw.fillRectangleRGB(x, y, 1, cellSize, 250000, 250000, 250000);
+  xw.fillRectangleRGB(x + cellSize, y, 1, cellSize, 250000, 250000, 250000);
+  xw.fillRectangleRGB(x, y + cellSize, cellSize, 1, 250000, 250000, 250000);
 }
 
 void GraphicsDisplay::setLevel(int level) {

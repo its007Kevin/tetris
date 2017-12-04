@@ -23,6 +23,9 @@ class Xwindow {
   // Draws a rectangle
   void fillRectangle(int x, int y, int width, int height, int colour=Black);
 
+  // Draws a rectangle with custom RGB
+  void fillRectangleRGB(int x, int y, int width, int height, int r, int g, int b);
+
   // Draws a string
   void drawString(int x, int y, std::string msg, int colour=Black);
 

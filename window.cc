@@ -70,6 +70,20 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[Black]);
 }
 
+void Xwindow::fillRectangleRGB(int x, int y, int width, int height, int r, int g, int b) {
+  XColor customcol;
+  customcol.red = r;
+  customcol.green = g;
+  customcol.blue = b;
+  customcol.flags = DoRed | DoGreen | DoBlue;
+  Colormap cmap = DefaultColormap(d,DefaultScreen(d));
+  XAllocColor(d, cmap, &customcol);
+
+  XSetForeground(d, gc, customcol.pixel);
+  XFillRectangle(d, w, gc, x, y, width, height);
+  XSetForeground(d, gc, colours[Black]);
+}
+
 void Xwindow::drawString(int x, int y, string msg, int colour) {
   XSetForeground(d, gc, colours[colour]);
   Font f = XLoadFont(d, "6x13");
