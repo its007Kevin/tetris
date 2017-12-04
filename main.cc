@@ -310,6 +310,14 @@ int main(int argc, char *argv[]) {
           seqCommands.emplace_back(s); //add them to the queue
         }
         for (int i = 0; i < seqCommands.size(); ++i) {
+          int digitCounter = 0;
+          while (isdigit(seqCommands[i][digitCounter])) {
+            digitCounter++;
+          }
+          if (digitCounter == seqCommands[i].size()) {
+            seqCommands[i] +=  seqCommands[i + 1];
+            seqCommands.erase(seqCommands.begin() + i + 1);
+          }
           applyCommand(seqCommands.at(i), g, commands, enableBonus);
         }
       } else {
