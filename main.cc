@@ -273,21 +273,19 @@ int main(int argc, char *argv[]) {
     }
   }
   shared_ptr<TextDisplay> td = make_shared<TextDisplay>(18, 11);
-  td->setLevel(startLevel);
   if (enableBonus) {
     td->enhancementsOn();
   }
   g.setTextDisplay(td);
   if (createGraphics) {
     shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 630);
-    gd->setLevel(startLevel);
     g.setGraphicsDisplay(gd);
     if (enableBonus) {
       gd->enableHold();
       gd->setHoldPiece({{' ', ' ', ' ', ' '}, {' ', ' ', ' ', ' '}});
     }
-    // enable hold display for graphics
   }
+  g.setLevel(startLevel);
   g.init(18, 11);
   cout << g;
 
