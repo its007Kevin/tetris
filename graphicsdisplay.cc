@@ -41,7 +41,6 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize},
   xw.drawString(offset , offset, "QUADRIS");
   xw.drawString(offset , winSize - 40, "Created by:");
   xw.drawString(offset , winSize - 20, "Eric Wang, Bob Zhang, Kevin Zeng");
-  xw.drawString(offset, 40, "Hold: ");
   xw.drawString(offset, 5 * winSize / gridSize, "Next: ");
   xw.drawString(offset, offset + 8 * winSize / gridSize, "Level: ");
   xw.drawString(offset, offset + 10 * winSize / gridSize, "Current Score: ");
@@ -124,4 +123,8 @@ void GraphicsDisplay::setScore(int score) {
 void GraphicsDisplay::setHighScore(int highScore) {
   xw.fillRectangle(offset, offset + 4 + 12 * winSize / gridSize, 100, 16, Xwindow::White);
   xw.drawString(offset, offset + 20 + 12 * winSize / gridSize, to_string(highScore));
+}
+
+void GraphicsDisplay::enableHold() {
+  xw.drawString(offset, 40, "Hold: ");
 }

@@ -22,5 +22,6 @@ class GraphicsDisplay: public Observer {
   void setHoldPiece(std::vector<std::vector<char>> holdPiece);
   void setScore(int score);
   void setHighScore(int highScore);
+  void enableHold();
 };
 #endif

@@ -279,6 +279,10 @@ int main(int argc, char *argv[]) {
   if (createGraphics) {
     shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 630);
     g.setGraphicsDisplay(gd);
+    if (enableBonus) {
+      gd->enableHold();
+      gd->setHoldPiece({{' ', ' ', ' ', ' '}, {' ', ' ', ' ', ' '}});
+    }
     // enable hold display for graphics
   }
   g.init(18, 11);
