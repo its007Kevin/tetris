@@ -28,12 +28,20 @@ void TextDisplay::setNextPiece(vector<vector<char>> nextPiece) {
     this->nextPiece = nextPiece;
 }
 
+void TextDisplay::setHoldPiece(vector<vector<char>> holdPiece) {
+    this->holdPiece = holdPiece;
+}
+
 void TextDisplay::setScore(int score) {
   this->score = score;
 }
 
 void TextDisplay::setHighScore(int highScore) {
   this->highScore = highScore;
+}
+
+void TextDisplay::enhancementsOn() {
+    runEnhancement = true;
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
@@ -61,6 +69,15 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
             out << td.nextPiece[i][j];
         }
         out << endl;
+    }
+    if (td.runEnhancement) {
+        out << "Hold: " << endl;
+        for (int i = 0; i < td.holdPiece.size(); i++) {
+            for (int j = 0; j < td.holdPiece[i].size(); j++) {
+                out << td.holdPiece[i][j];
+            }
+            out << endl;
+        }
     }
     return out;
 }

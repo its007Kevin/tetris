@@ -33,8 +33,13 @@ class Grid {
   std::shared_ptr<Level> currLevel = std::make_shared<LevelZero>(scriptFile);
   Piece currPiece{'I', 0};
   Piece nextPiece{'J', 0};
+  Piece holdPiece{'L', 0};
+  bool allowedToHold = true;
+  bool firstRun = true;
   bool displayGraphics = true;
   std::vector<Piece> pieces;
+  bool runEnhancements = false;
+
 
  public:
   void setTextDisplay(std::shared_ptr<TextDisplay> td);
@@ -71,6 +76,8 @@ class Grid {
   void hint();
   void changeScriptFile(std::string filename);
   void setSeed(int seed);
+  void hold();
+  void enhancementsOn();
   friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };
 

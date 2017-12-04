@@ -32,7 +32,7 @@ string autoComplete(string input, vector<string> commands) {
   }
 }
 
-void applyCommand(string cmd, Grid &g) {
+void applyCommand(string cmd, Grid &g, bool enableBonus) {
   vector<string> commands;
   bool multCommands = false;
 
@@ -56,6 +56,7 @@ void applyCommand(string cmd, Grid &g) {
   string T = "T";
   string res = "restart";
   string hint = "hint";
+  string hold = "hold";
 
   commands.emplace_back(left);
   commands.emplace_back(right);
@@ -77,6 +78,8 @@ void applyCommand(string cmd, Grid &g) {
   commands.emplace_back(T);
   commands.emplace_back(res);
   commands.emplace_back(hint);
+  commands.emplace_back(hold);
+
   int repeat = 1;
   int i = 0;
   while (i < cmd.length() && isdigit(cmd[i])) {
@@ -128,6 +131,13 @@ void applyCommand(string cmd, Grid &g) {
   }
   else if (cmd == rand) {
     g.random();
+  }
+  else if (cmd == hold && enableBonus) {
+    try {
+      g.hold();
+    } catch (exception& err) {
+      cout << err.what() << endl;
+    }
   }
   else if (cmd == I) {
     g.replacePieceWith('I');
@@ -188,8 +198,8 @@ int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
   bool createGraphics = true;
+  bool enableBonus = false;
   vector<string> seqCommands;
-
 
   Grid g;
   // NEED to initialize displays first because setlevel updates textdisplay
@@ -216,12 +226,16 @@ int main(int argc, char *argv[]) {
           int seed;
           iss >> seed;
           g.setSeed(seed);
+      } else if (string(argv[i]) == "-enablebonus") {
+          enableBonus = true;
+          g.enhancementsOn();
       }
     }
   }
   if (createGraphics) {
     shared_ptr<GraphicsDisplay> gd = make_shared<GraphicsDisplay>(18, 630);
     g.setGraphicsDisplay(gd);
+    // enable hold display for graphics
   }
   g.init(18, 11);
   cout << g;
@@ -237,10 +251,10 @@ int main(int argc, char *argv[]) {
           seqCommands.emplace_back(s); //add them to the queue
         }
         for (int i = 0; i < seqCommands.size(); ++i) {
-          applyCommand(seqCommands.at(i), g);
+          applyCommand(seqCommands.at(i), g, enableBonus);
         }
       } else {
-        applyCommand(cmd, g);
+        applyCommand(cmd, g, enableBonus);
       }
 
     }

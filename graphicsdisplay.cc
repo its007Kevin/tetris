@@ -29,18 +29,12 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize): gridSize{gridSize},
   xw.drawString(offset , winSize - 40, "Created by:");
   xw.drawString(offset , winSize - 20, "Eric Wang, Bob Zhang, Kevin Zeng");
   xw.drawString(offset, 40, "Next: ");
+  //xw.drawString(offset, 150, "Hold: ");
   xw.drawString(offset, offset + 5 * winSize / gridSize, "Current Score: ");
   xw.drawString(offset, offset + 10 * winSize / gridSize, "Highscore: ");
-  // for (int i = 0; i < 500; i += 25) {
-  //   for (int j = 0; j < 500; j+= 25) {
-  //   xw.fillRectangle(i, j, 25, 25, Xwindow::Cyan);
-  //   }
-  // }
 }
 
 void GraphicsDisplay::notify(Subject &whoNotified) {
-  //drawString for score, highscore
-  //DrawBigString for Highscore, Score Next Piece, etc. headers
   auto info = whoNotified.getInfo();
   if (info.row <= 2) return;
   fillCell(info.col + 7, info.row - 3, info.data);
@@ -91,6 +85,7 @@ void GraphicsDisplay::fillCell(int x, int y, char type) {
 void GraphicsDisplay::setLevel(int level) {
 
 }
+
 void GraphicsDisplay::setNextPiece(std::vector<std::vector<char>> nextPiece) {
   for (int i = 0; i < nextPiece.size(); i++) {
     for (int j = 0; j < nextPiece[i].size(); j++) {
@@ -98,10 +93,20 @@ void GraphicsDisplay::setNextPiece(std::vector<std::vector<char>> nextPiece) {
     }
   }
 }
+
+void GraphicsDisplay::setHoldPiece(std::vector<std::vector<char>> holdPiece) {
+  for (int i = 0; i < holdPiece.size(); i++) {
+    for (int j = 0; j < holdPiece[i].size(); j++) {
+      //fillCell(j + 1, i + 200, holdPiece[i][j]);
+    }
+  }
+}
+
 void GraphicsDisplay::setScore(int score) {
   xw.fillRectangle(offset, offset + 4 + 5 * winSize / gridSize, 100, 16, Xwindow::White);
   xw.drawString(offset, offset + 20 + 5 * winSize / gridSize, to_string(score));
 }
+
 void GraphicsDisplay::setHighScore(int highScore) {
   xw.fillRectangle(offset, offset + 4 + 10 * winSize / gridSize, 100, 16, Xwindow::White);
   xw.drawString(offset, offset + 20 + 10 * winSize / gridSize, to_string(highScore));

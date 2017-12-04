@@ -10,6 +10,7 @@
 #include "graphicsdisplay.h"
 #include "level.h"
 #include "collision.h"
+#include "holderror.h"
 #include "maxlevel.h"
 #include "minlevel.h"
 #include "levelzero.h"
@@ -25,9 +26,11 @@ void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
 }
 
 void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
-    this->gd = gd;
-    gd->setScore(0);
-    gd->setHighScore(0);
+    if (displayGraphics) {
+        this->gd = gd;
+        gd->setScore(0);
+        gd->setHighScore(0);
+    }
 }
 
 bool Grid::checkIsGameOver() {
@@ -90,6 +93,7 @@ void Grid::down(int times) {
             if (levelCount == 4) {
               ++blocksWithoutClear;
             }
+            allowedToHold = true;
             break;
         }
     }
@@ -160,6 +164,7 @@ void Grid::drop(int times) {
         }
       }
   }
+  allowedToHold = true;
   cout << *this;
 }
 
@@ -336,6 +341,10 @@ void Grid::updateScore(std::string type, int level) {
   }
   td->setScore(score);
   td->setHighScore(highScore);
+  if (displayGraphics) {
+      gd->setScore(score);
+      gd->setHighScore(highScore);
+  }
 }
 
 void Grid::levelUp() {
@@ -407,10 +416,10 @@ void Grid::restart() {
   }
   score = 0;
   td->setScore(score);
-  gd->setScore(score);
   setPiece(currPiece);
   td->setNextPiece(nextPiece.render());
   if (displayGraphics) {
+    gd->setScore(score);
     gd->setNextPiece(nextPiece.render());
   }
   cout << *this;
@@ -433,6 +442,39 @@ void Grid::setSeed(int seed) {
     } else if (levelCount == 4) {
         currLevel = std::make_shared<LevelFour>(seed);
     }
+}
+
+void Grid::hold() {
+    if (allowedToHold && runEnhancements) {
+        unsetPiece(currPiece);
+        if (firstRun) {
+            holdPiece = currPiece;
+            spawnNextPiece();
+            firstRun = false;
+            allowedToHold = false;
+        } else {
+            // Swap pieces
+            Piece tempPiece{'Z', 0};
+            tempPiece = holdPiece;
+            holdPiece = currPiece;
+            currPiece = tempPiece;
+            currPiece.reset();
+            setPiece(currPiece);
+            allowedToHold = false;
+        }
+        td->setHoldPiece(holdPiece.render());
+        if (displayGraphics) {
+            gd->setHoldPiece(holdPiece.render());
+        }
+    } else {
+        throw HoldError();
+    }
+    cout << *this;
+}
+
+void Grid::enhancementsOn() {
+    runEnhancements = true;
+    td->enhancementsOn();
 }
 
 std::ostream& operator<<(std::ostream &out, const Grid &g) {

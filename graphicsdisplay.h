@@ -19,6 +19,7 @@ class GraphicsDisplay: public Observer {
   void notify(Subject &whoNotified) override;
   void setLevel(int level);
   void setNextPiece(std::vector<std::vector<char>> nextPiece);
+  void setHoldPiece(std::vector<std::vector<char>> holdPiece);
   void setScore(int score);
   void setHighScore(int highScore);
 };

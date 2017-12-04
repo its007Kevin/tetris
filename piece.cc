@@ -7,28 +7,36 @@ using namespace std;
 
 Piece::Piece(char type, int level): type{type}, levelGenerated{level} {
   if (type == 'I') {
-    coords = {{3, 0}, {3, 1}, {3, 2}, {3, 3}};
+    initialCoords = {{3, 0}, {3, 1}, {3, 2}, {3, 3}};
+    coords = initialCoords;
   }
   else if (type == 'J') {
-    coords = {{3, 0}, {4, 0}, {4, 1}, {4, 2}};
+    initialCoords = {{3, 0}, {4, 0}, {4, 1}, {4, 2}};
+    coords = initialCoords;
   }
   else if (type == 'L') {
-    coords = {{3, 2}, {4, 0}, {4, 1}, {4, 2}};
+    initialCoords = {{3, 2}, {4, 0}, {4, 1}, {4, 2}};
+    coords = initialCoords;
   }
   else if (type == 'O') {
-    coords = {{3, 0}, {3, 1}, {4, 0}, {4, 1}};
+    initialCoords = {{3, 0}, {3, 1}, {4, 0}, {4, 1}};
+    coords = initialCoords;
   }
   else if (type == 'S') {
-    coords = {{4, 0}, {3, 2}, {3, 1}, {4, 1}};
+    initialCoords = {{4, 0}, {3, 2}, {3, 1}, {4, 1}};
+    coords = initialCoords;
   }
   else if (type == 'Z') {
-    coords = {{3, 0}, {3, 1}, {4,1}, {4, 2}};
+    initialCoords = {{3, 0}, {3, 1}, {4,1}, {4, 2}};
+    coords = initialCoords;
   }
   else if (type == 'T') {
-    coords = {{3, 0}, {3, 1}, {3, 2}, {4, 1}};
+    initialCoords = {{3, 0}, {3, 1}, {3, 2}, {4, 1}};
+    coords = initialCoords;
   }
   else if (type == '*') {
-    coords = {{3, 5}};
+    initialCoords = {{3, 5}};
+    coords = initialCoords;
   }
   potentialCoords = coords;
 }
@@ -143,6 +151,11 @@ void Piece::incRows(int num) {
   }
 }
 
+void Piece::reset() {
+  coords = initialCoords;
+  potentialCoords = coords;
+}
+
 vector<vector<char>> Piece::render() {
   // Create a grid with 2 rows and 4 columns
   // (This is the max space a piece can take up)
@@ -154,7 +167,7 @@ vector<vector<char>> Piece::render() {
     }
     grid.emplace_back(row);
   }
-  vector<vector<int>> renderCoords = coords;
+  vector<vector<int>> renderCoords = initialCoords;
   for (int i = 0; i < renderCoords.size(); i++) {
     renderCoords[i][0] -= 3;
   }

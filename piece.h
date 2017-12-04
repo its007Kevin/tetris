@@ -6,6 +6,7 @@
 
 class Piece {
   // coords represent (row, col) NOT (x,y)
+  std::vector<std::vector<int>> initialCoords;
   std::vector<std::vector<int>> coords;
   std::vector<std::vector<int>> potentialCoords;
   char type;
@@ -30,6 +31,7 @@ class Piece {
   // Manipulate Piece
   void set();
   void revert();
+  void reset();
   std::vector<std::vector<int>> getCoords();
   std::vector<std::vector<int>> getPotentialCoords();
   char getType();
