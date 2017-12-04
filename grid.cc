@@ -28,8 +28,9 @@ void Grid::setTextDisplay(shared_ptr<TextDisplay> td) {
 void Grid::setGraphicsDisplay(shared_ptr<GraphicsDisplay> gd) {
     if (displayGraphics) {
         this->gd = gd;
-        gd->setScore(0);
-        gd->setHighScore(0);
+        gd->setLevel(levelCount);
+        gd->setScore(score);
+        gd->setHighScore(highScore);
     }
 }
 
@@ -352,6 +353,9 @@ void Grid::levelUp() {
     ++levelCount;
     setLevel(levelCount);
     td->setLevel(levelCount);
+    if (displayGraphics) {
+      gd->setLevel(levelCount);
+    }
   } else {
     throw MaxLevel();
   }
@@ -362,6 +366,9 @@ void Grid::levelDown() {
     --levelCount;
     setLevel(levelCount);
     td->setLevel(levelCount);
+    if (displayGraphics) {
+      gd->setLevel(levelCount);
+    }
   } else {
     throw MinLevel();
   }
@@ -370,6 +377,9 @@ void Grid::levelDown() {
 void Grid::setLevel(int level) {
   levelCount = level;
   td->setLevel(level);
+  if (displayGraphics) {
+    gd->setLevel(level);
+  }
   if (levelCount == 0) {
     currLevel = std::make_shared<LevelZero>(scriptFile);
   } else if (levelCount == 1) {
