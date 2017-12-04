@@ -114,6 +114,7 @@ void Grid::left(int times) {
 void Grid::right(int times) {
     unsetPiece(currPiece);
     for (int i = 0; i < times; i++) {
+      //cout << i << " AAAAAA@@" << endl;
         currPiece.right();
         tryPlace();
     }
@@ -191,11 +192,31 @@ void Grid::tryPlace() {
         checkPiece(currPiece);
         currPiece.set();
         if (currPiece.checkHeavy()) {
-          down(1);
+          currPiece.down();
+          try {
+              checkPiece(currPiece);
+              currPiece.set();
+          } catch (out_of_range) {
+              currPiece.revert();
+              //break;
+          } catch (Collision) {
+              setPiece(currPiece);
+              currPiece.revert();
+              pieces.emplace_back(currPiece);
+              removeFilledRows();
+              spawnNextPiece();
+              if (levelCount == 4) {
+                ++blocksWithoutClear;
+              }
+              allowedToHold = true;
+              //break;
+          }
         }
     } catch (out_of_range) {
+      //cout << "OOR" << endl;
         currPiece.revert();
     } catch (Collision) {
+      //cout << "COL" << endl;
         currPiece.revert();
     }
 }
@@ -210,6 +231,8 @@ void Grid::checkPiece(Piece piece) {
         if (r < 0 || c < 0 || c >= cols) {
             throw out_of_range("boundary");
         } else if (r >= rows || theGrid[r][c].getInfo().data != ' ') {
+            //if (r < rows)
+            //cout << (theGrid[r][c].getInfo().data != ' ') << "AAADDDD" << endl;
             throw Collision();
         }
     }
