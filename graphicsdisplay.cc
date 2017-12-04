@@ -88,7 +88,6 @@ void GraphicsDisplay::fillCell(int x, int y, char type) {
       break;
   }
   xw.fillRectangle(x, y, cellSize, cellSize, colour);
-  if (type == ' ') return;
   xw.fillRectangleRGB(x, y, cellSize, 1, 250000, 250000, 250000);
   xw.fillRectangleRGB(x, y, 1, cellSize, 250000, 250000, 250000);
   xw.fillRectangleRGB(x + cellSize, y, 1, cellSize, 250000, 250000, 250000);
