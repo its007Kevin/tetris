@@ -275,6 +275,16 @@ int main(int argc, char *argv[]) {
 
   try {
     while (cin >> cmd) {
+      try {
+        cmd = autoComplete(cmd, commands);
+      } catch (InvalidMove &err) {
+        //cout << err.what() << endl;
+        //continue;
+      } catch (MultipleCommands &err) {
+        //cout << err.what() << endl;
+        //multCommands = true;
+        //continue;
+      }
       if (cmd == "sequence") {
         string file;
         cin >> file;
