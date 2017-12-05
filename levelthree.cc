@@ -30,3 +30,4 @@ Piece LevelThree::generatePiece(std::string file) {
   generatedPiece.makeHeavy();
   return generatedPiece;
 }
+

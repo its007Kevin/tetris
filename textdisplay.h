@@ -29,3 +29,4 @@ class TextDisplay: public Observer {
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 #endif
+

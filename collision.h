@@ -5,3 +5,4 @@
 class Collision: public std::exception {};
 
 #endif
+

@@ -17,3 +17,4 @@ class Cell : public Subject {
   void shiftRows(int n);
 };
 #endif
+

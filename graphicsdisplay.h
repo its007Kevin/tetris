@@ -25,3 +25,4 @@ class GraphicsDisplay: public Observer {
   void enableHold();
 };
 #endif
+

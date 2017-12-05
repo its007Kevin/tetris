@@ -11,3 +11,4 @@ class MaxLevel: public std::exception {
 };
 
 #endif
+

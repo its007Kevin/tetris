@@ -128,3 +128,4 @@ void GraphicsDisplay::setHighScore(int highScore) {
 void GraphicsDisplay::enableHold() {
   xw.drawString(offset, 40, "Hold: ");
 }
+

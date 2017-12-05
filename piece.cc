@@ -178,3 +178,4 @@ vector<vector<char>> Piece::render() {
   }
   return grid;
 }
+

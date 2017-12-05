@@ -21,3 +21,4 @@ Piece LevelZero::generatePiece() {
   ++pieceCount; //increment to get next block
   return generatedPiece;
 }
+

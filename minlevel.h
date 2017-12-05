@@ -11,3 +11,4 @@ class MinLevel: public std::exception {
 };
 
 #endif
+

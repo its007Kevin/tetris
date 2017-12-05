@@ -9,3 +9,4 @@ void Subject::attach(std::shared_ptr<Observer> o) {
 void Subject::notifyObservers() {
   for (auto &ob : observers) ob->notify(*this);
 }
+

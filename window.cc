@@ -121,3 +121,4 @@ void Xwindow::showAvailableFonts() {
 
   for (int i = 0; i < count; ++i) cout << fnts[i] << endl;
 }
+

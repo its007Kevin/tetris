@@ -35,3 +35,4 @@ Piece LevelFour::generateCenterPiece() {
   Piece centerPiece{Piece{'*', 4}};
   return centerPiece;
 }
+

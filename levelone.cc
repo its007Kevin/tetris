@@ -12,3 +12,4 @@ Piece LevelOne::generatePiece() {
   Piece generatedPiece{Piece{pieces[randomIndex], 1}};
   return generatedPiece;
 }
+

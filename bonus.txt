@@ -1,0 +1,7 @@
+Bonus Feature: Hold block
+- Hold option, enable by running ./quadris -enablebonus
+- To hold a block, type the "hold" command, if its your first time holding a block,
+the current block will be held and the next piece will come as follows
+- If you already have a block, it will switch the hold block with your current block
+- You can only hold once per turn
+
