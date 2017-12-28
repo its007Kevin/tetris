@@ -8,7 +8,19 @@ To install simply run
 ```
 $ git clone https://github.com/its007Kevin/tetris.git
 ```
-Unlike regular tetris, this version can be played through the command line.
+Navigate to the folder
+```
+cd tetris
+```
+Allow executution 
+```
+chmod u+x quadris
+```
+Run it
+```
+./quadris
+```
+Unlike regular tetris, this version can only be played through the command line.
 
 ## Commands 
 ```
