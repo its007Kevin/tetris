@@ -1,5 +1,7 @@
 # Tetris
 
+![](https://github.com/its007Kevin/tetris/blob/master/screenshot.png)
+
 Installation
 
 To install simply run
